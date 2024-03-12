@@ -1,34 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react'
+import AppContext, { UserState } from './context/AppContext';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { getUserData } from './services/users.service';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import Body from './hoc/Body/Body';
+import Home from './views/Home/Home';
+import NoPageFound from './views/NoPageFound/NoPageFound';
+import { auth } from './config/firebaseConfig';
+//import AuthenticatedRoute from './hoc/AuthenticatedRoute/AuthenticatedRoute';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [userAuth, loading] = useAuthState(auth);
+  const [appState, setAppState] = useState<UserState>({
+    user: null,
+    userData: null,
+    loading: true,
+    callObject: null,
+    setContext: () => { },
+  });
+
+  if (appState.user !== userAuth) {
+    setAppState((prevState: UserState) => ({
+      ...prevState,
+      user: userAuth || null,
+    }));
+  }
+
+  useEffect(() => {
+    if (userAuth === null || userAuth === undefined) {
+      if (!loading) {
+        setAppState(prevState => ({
+          ...prevState,
+          loading: false,
+        }));
+      }
+      return;
+    }
+
+    getUserData(userAuth.uid)
+      .then(snapshot => {
+        if (!snapshot.exists()) {
+          throw new Error('Something went wrong!');
+        }
+
+        setAppState(prevState => ({
+          ...prevState,
+          loading: false,
+          userData: snapshot.val()[Object.keys(snapshot.val())[0]],
+        }));
+      })
+      .catch(e => alert(e.message))
+  }, [userAuth, loading]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Router>
+    <AppContext.Provider value={{ ...appState, setContext: setAppState }}>
+      {!appState.loading && <Body>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          {/* <Route path='/new-chat' element={<AuthenticatedRoute><NewChat /></AuthenticatedRoute>} /> */}
+          <Route path='*' element={<NoPageFound />} />
+        </Routes>
+      </Body>}
+    </AppContext.Provider>
+    </Router>
   )
 }
 
