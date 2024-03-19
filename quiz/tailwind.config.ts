@@ -1,9 +1,16 @@
-/** @type {import('tailwindcss').Config} */
+import daisyui from 'daisyui';
 
-module.exports = {
+export default {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+    //   backgroundColor: {
+    //   'primary': '#3490dc',
+    //   'accent': '#ffed4a',
+    // }
+    },
   },
-  plugins: [require("daisyui")],
-}
+  // Temporarily disable or modify the purge option
+  // purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  plugins: [daisyui],
+};

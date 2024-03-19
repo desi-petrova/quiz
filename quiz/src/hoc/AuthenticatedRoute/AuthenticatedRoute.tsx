@@ -11,7 +11,7 @@ const AuthenticatedRoute = ({ children } : RouteProps) => {
   const location = useLocation();
 
   if (user === null || userData === null) {
-    return <Navigate to='/login' state={location.pathname} />;
+    return <Navigate to='/' state={location.pathname} />;
   } 
 
   return children;

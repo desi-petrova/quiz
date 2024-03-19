@@ -8,6 +8,7 @@ import Home from './views/Home/Home';
 import NoPageFound from './views/NoPageFound/NoPageFound';
 import { auth } from './config/firebaseConfig';
 //import AuthenticatedRoute from './hoc/AuthenticatedRoute/AuthenticatedRoute';
+import './App.css';
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
   }, [userAuth, loading]);
 
   return (
+    <div className="App">
     <Router>
     <AppContext.Provider value={{ ...appState, setContext: setAppState }}>
       {!appState.loading && <Body>
@@ -65,6 +67,7 @@ function App() {
       </Body>}
     </AppContext.Provider>
     </Router>
+    </div>
   )
 }
 
