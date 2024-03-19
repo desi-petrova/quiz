@@ -1,10 +1,10 @@
+import CreateAccount from '../../components/CreateAccount/CreateAccount'
 
 const Home = () => {
 
     return (
         <p className="text-lg">
-        Hello!  Hello!
-        Hello! Hello! Hello! Hello! Hello!
+        <CreateAccount />
         </p>
     );
 } 
