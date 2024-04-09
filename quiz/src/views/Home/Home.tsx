@@ -3,9 +3,9 @@ import CreateAccount from '../../components/CreateAccount/CreateAccount'
 const Home = () => {
 
     return (
-        <p className="text-lg">
-        <CreateAccount />
-        </p>
+        <div className="text-lg">
+        Hello
+        </div>
     );
 } 
 
