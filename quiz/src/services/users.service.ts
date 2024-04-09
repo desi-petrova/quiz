@@ -1,5 +1,5 @@
 import { get, set, ref, query, equalTo, orderByChild, update, DataSnapshot, onValue, remove } from 'firebase/database';
-import { db } from '../config/firebaseConfig';
+import { db } from '../config/firebaseConfig.ts';
 
 export const getUserByHandle = (handle: string): Promise<DataSnapshot> => {
   return get(ref(db, `users/${handle}`));
@@ -8,10 +8,11 @@ export const getUserByHandle = (handle: string): Promise<DataSnapshot> => {
 export const createUserHandle = (
   handle: string,
   uid: string,
-  email: string | null,
+  email: string,
   firstName: string,
   lastName: string,
-  phoneNumber: string): Promise<void> => {
+  phoneNumber: string,
+  role: string): Promise<void> => {
 
   return set(ref(db, `users/${handle}`), {
     handle,
@@ -20,14 +21,9 @@ export const createUserHandle = (
     firstName,
     lastName,
     phoneNumber,
-    myTeams: '',
     profilePhoto: '',
-    myChannels: {},
-    status:'Available',
-    unseen: {
-      chats: false,
-      teams: false
-    }
+    role,
+    isBlocked: false,
   })
 };
 

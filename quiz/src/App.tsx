@@ -7,8 +7,10 @@ import Body from './hoc/Body/Body';
 import Home from './views/Home/Home';
 import NoPageFound from './views/NoPageFound/NoPageFound';
 import { auth } from './config/firebaseConfig';
-//import AuthenticatedRoute from './hoc/AuthenticatedRoute/AuthenticatedRoute';
+import AuthenticatedRoute from './hoc/AuthenticatedRoute/AuthenticatedRoute';
 import './App.css';
+import Login from './views/Login/Login';
+import CreateAccount from './components/CreateAccount/CreateAccount';
 
 
 function App() {
@@ -55,12 +57,14 @@ function App() {
   }, [userAuth, loading]);
 
   return (
-    <div className="App">
+    <div>
     <Router>
     <AppContext.Provider value={{ ...appState, setContext: setAppState }}>
       {!appState.loading && <Body>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/createAccount' element={!appState.user && <CreateAccount />} />
+          <Route path='/login' element={!appState.user && <Login />} />
           {/* <Route path='/new-chat' element={<AuthenticatedRoute><NewChat /></AuthenticatedRoute>} /> */}
           <Route path='*' element={<NoPageFound />} />
         </Routes>
