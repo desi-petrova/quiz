@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppContext from '../../context/AppContext';
 import TopNavButton from '../../views/TopNavButtons/TopNavButtons';
+import { logoutUser } from '../../services/auth.service';
 
 
 interface BodyProps {
@@ -22,6 +23,21 @@ const LinksUserOptions: LinksUserOptionsType[] = [
 const Body = ({ children }: BodyProps): JSX.Element => {
   const { userData, setContext } = useContext(AppContext);
   const navigate = useNavigate();
+
+  const onLogout = () => {
+    logoutUser()
+      .then(() => {
+        setContext(prevState => ({
+          ...prevState,
+          user: null,
+          userData: null,
+        }));
+      })
+      .catch((e: Error) => {
+        console.error(e.message);
+      })
+      .finally(() => navigate('/'));
+  }
 
   return (
     <div>
@@ -48,7 +64,7 @@ const Body = ({ children }: BodyProps): JSX.Element => {
             <span className="badge">New</span>
             </a>
           </li>
-          <li><a>Logout</a></li>
+          <li><button onClick={onLogout}>Logout</button></li>
         </ul>
       </div>
       </div>)
