@@ -74,9 +74,10 @@ const CreateAccount = () => {
     })
   }
 
-  const updateRole = (e: React.MouseEvent<HTMLSelectElement, MouseEvent>) => {
+  const updateRole = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = e.target.value
     setFormError({...formError, roleErr: false, error: false})
-    setForm({ ...form, role: e.target.value });
+    setForm({ ...form, role: selectedValue });
   };
 
   const saveNewUser = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -102,13 +103,15 @@ const CreateAccount = () => {
     if(!form.email.match(EMAIL_REGEX)){
       errors = ({...errors, emailErr:true, error: true})
     }
+    if(!form.role){
+      errors = ({...errors, roleErr:true, error: true})
+    }
 
-    console.log(form)
-    console.log(formError)
+
     setFormError({ ...errors });
     if(errors.error) return "Error form";
     
-    console.log(1)
+    
     getUserByHandle(form.username)
     .then(snapshot => {
       if (snapshot.exists()) {
@@ -164,10 +167,9 @@ const CreateAccount = () => {
                 id="first-name"
                 autoComplete="given-name"
                 placeholder="First name"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset 
-                ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
-                sm:text-sm sm:leading-6 
-                ${formError.firstNameLength ? 'border-red-500' : ''}`"
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
+                focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6 
+                ${formError.firstNameLength ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
                 onChange={updateNewUser('firstName')}
                 />
                 {formError.firstNameLength && <p className="text-red-500">{MSG_NAMES_LENGTH}</p>}
@@ -184,7 +186,9 @@ const CreateAccount = () => {
                 id="last-name"
                 autoComplete="family-name"
                 placeholder='Last name'
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
+                focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6
+                ${formError.lastNameLength ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
                 onChange={updateNewUser('lastName')}
               />
               {formError.lastNameLength && <p className="text-red-500">{MSG_NAMES_LENGTH}</p>}
@@ -200,7 +204,9 @@ const CreateAccount = () => {
                 id="username"
                 autoComplete="username"
                 placeholder="Username"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
+                focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6
+                ${formError.usernameErr ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
                 onChange={updateNewUser('username')}
               />
               {formError.usernameErr && <p className="text-red-500">{MSG_USERNAMES_LENGTH}</p>}
@@ -216,7 +222,9 @@ const CreateAccount = () => {
                 id="password"
                 autoComplete="password"
                 placeholder="Password"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
+                focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6
+                ${formError.passwordErr ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
                 onChange={updateNewUser('password')}
               />
               {formError.passwordErr && <p className="text-red-500">{MSG_PASSWORD_LENGTH}</p>}
@@ -224,7 +232,6 @@ const CreateAccount = () => {
             </div>
           </div>
           <div className="sm:col-span-2">
-            
             <div className="mt-2.5 ">
               <input
                 type="email"
@@ -232,7 +239,9 @@ const CreateAccount = () => {
                 id="email"
                 autoComplete="email"
                 placeholder="Email"
-                className="block w-full rounded-md border-0 border-yellow-400 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 "
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
+                focus:ring-2 focus:ring-inset focus:ring-purple-600 focus:border-0 sm:text-sm sm:leading-6
+                ${formError.emailErr ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
                 onChange={updateNewUser('email')}
               />
               {formError.fieldErr && !form.email && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
@@ -246,34 +255,45 @@ const CreateAccount = () => {
                 id="phone-number"
                 autoComplete="tel"
                 placeholder="Phone number"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
+                focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6
+                ${formError.phoneErr ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
                 onChange={updateNewUser('phone')}
               /> 
               {formError.fieldErr && !form.phone && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
             </div> 
-          </div>   
-        </div>
-
-        <div className="mt-10">
-          <div>
-          <select className="select select-amber-400 w-full max-w-xs"
-          value={form.role}
-          onClick={updateRole}>
-            <option disabled selected>Choose one</option>
-            <option value='student'>Student</option>
-            <option value='teacher'>Teacher</option>
-            <option value='guest'>Guest</option>
-          </select>
-          {formError.fieldErr && !form.role && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
           </div>
-          <button
+          
+          <div className="sm:col-span-2">
+          <div className="mt-2.5">
+          <select className={`select select-amber-400 w-full  
+          focus:ring-2 focus:ring-inset focus:ring-purple-600
+          ${formError.error && formError.roleErr ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
+          value={form.role}
+          onChange={updateRole}>
+            <option disabled selected value=''>Choose one</option>
+            <option value='student' >Student</option>
+            <option value='teacher' >Teacher</option>
+            <option value='guest' >Guest</option>
+          </select>
+          {formError.error && !formError.roleErr && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
+          </div> 
+          </div>
+        </div>
+          
+        <div className='flex justify-center'>
+            <button
             type="button"
-            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="block w-1/2 m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
+            shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+            focus-visible:outline-purple-600"
             onClick={saveNewUser}
           >
             Register
           </button>
         </div>
+          
+       
       </form>
     </div>
   </>
