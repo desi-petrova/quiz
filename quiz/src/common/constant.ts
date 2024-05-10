@@ -17,3 +17,7 @@ export const MSG_LOGIN_UNABLE = '*Wrong username or password*';
 export const MSG_PASSWORD_LENGTH = '*Password length must be more than 6 characters*';
 export const MSG_PASSWORD_NOT_MATCH = '*Password fields do not match*';
 export const MSG_INVALID_IMAGE_FORMAT = '*Invalid image format*';
+
+//login error messages
+export const MSG_WRONG_EMAIL_AND_PASSWORD = '*This user and password was not found*';
+;
