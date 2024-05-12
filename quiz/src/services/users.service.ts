@@ -35,6 +35,10 @@ export const updateUserData = (handle: string, key: string, value: string | bool
   return update(ref(db), { [`users/${handle}/${key}`]: value });
 };
 
+export const updateUserQuestionnaires = (uid: string, handle: string) => {
+  return update(ref(db), { [`users/${handle}/myQuestionnaires/${uid}`]: true })
+}
+
 export const setAllUsersUnseen = (members: string[], handle: string, key: string): void => {
   members.forEach(member => {
     if (member !== handle) {
