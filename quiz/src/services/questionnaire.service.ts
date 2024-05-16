@@ -35,3 +35,22 @@ export const getQuestionnaireById = (id: string) => {
         return questionnaire;
       });
   };
+
+  export interface NewQuestions { (question: string[]): void }
+
+  export const getUserQuestionsLive = (id: string, listener: NewQuestions) => {
+
+    return onValue(ref(db, `questionnaires/${id}/questions`), (snapshot) => {
+      if (!snapshot.exists()) return [];
+      const newQuestion = Object.keys(snapshot.val());
+      return listener(newQuestion)
+    })
+  }
+
+  export const updateQuestionnaireQuestion = (idQuestionnaire: string, idQuestion: string): Promise<void> => {
+    return update(ref(db), { [`questionnaire/${idQuestionnaire}/questions/${idQuestion}`]: true });
+  };
+
+  export const updateQuestionnaireAnswer = (idQuestionnaire: string, idAnswer: string): Promise<void> => {
+    return update(ref(db), { [`questionnaire/${idQuestionnaire}/answers/${idAnswer}`]: true });
+  };

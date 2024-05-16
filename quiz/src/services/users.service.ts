@@ -39,6 +39,27 @@ export const updateUserQuestionnaires = (uid: string, handle: string) => {
   return update(ref(db), { [`users/${handle}/myQuestionnaires/${uid}`]: true })
 }
 
+export interface UserQuestionnaire { (questionnaires: string[]): void }
+
+export const getUserQuestionnaireLive = (handle: string, listener: UserQuestionnaire) => {
+
+  return onValue(ref(db, `users/${handle}/myQuestionnaire`), (snapshot) => {
+    if (!snapshot.exists()) return [];
+    const myQuestionnaires = Object.keys(snapshot.val());
+    return listener(myQuestionnaires)
+  })
+}
+
+export const updateUserQuestions = (handle: string, idQuestion: string): Promise<void> => {
+  return update(ref(db), { [`users/${handle}/myQuestions/${idQuestion}`]: true });
+};
+
+export const updateUserAnswers = (handle: string, idAnswer: string): Promise<void> => {
+  return update(ref(db), { [`users/${handle}/myAnswers/${idAnswer}`]: true });
+};
+
+
+
 export const setAllUsersUnseen = (members: string[], handle: string, key: string): void => {
   members.forEach(member => {
     if (member !== handle) {

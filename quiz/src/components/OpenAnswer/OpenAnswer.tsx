@@ -2,6 +2,11 @@ import { useState } from 'react';
 import { createQuestion, updateQuestionAnswers } from "../../services/question.service.ts";
 import {MSG_FIELD_REQUIRED} from '../../common/constant.ts';
 import { createAnswers } from '../../services/answers.service.ts';
+import {updateQuestionnaireQuestion, updateQuestionnaireAnswer} from "../../services/questionnaire.service.ts"
+import AppContext, { UserState } from '../../context/AppContext';
+import { useContext } from 'react';
+import {updateUserQuestions, updateUserAnswers} from "../../services/users.service.ts"
+
 
 interface NewQuestions{
     question: string,
@@ -10,10 +15,10 @@ interface NewQuestions{
 }
 
 interface OneAnswer {
-    id: string
+    idQuestionnaire: string
 }
 
-const OneAnswer = ({id} : OneAnswer) => {
+const OneAnswer = ({idQuestionnaire} : OneAnswer) => {
 
     const [newQuestion, setNewQuestion] = useState<NewQuestions>({
         question: '',
@@ -21,7 +26,9 @@ const OneAnswer = ({id} : OneAnswer) => {
         answer: '',
 
     }) 
-    const [error, setError] = useState<boolean>(false)
+    const [errorQuestion, setErrorQuestion] = useState<boolean>(false)
+    const [errorAnswer, setErrorAnswer] = useState<boolean>(false)
+    const { userData } = useContext<UserState>(AppContext);
 
     const updateNewQuestion = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -30,18 +37,25 @@ const OneAnswer = ({id} : OneAnswer) => {
             [field]: e.target.value,
         })
     }
+    
 
     const saveQuestion = () => {
 
-        if(!newQuestion.question) return setError(true)
+        console.log(idQuestionnaire)
+        if(!newQuestion.question) return setErrorQuestion(true)
+        if(!newQuestion.answer) return setErrorAnswer(true)
 
-        createQuestion(newQuestion.question, newQuestion.type, id)
+        createQuestion(newQuestion.question, newQuestion.type, idQuestionnaire)
         .then(question => {
-            createAnswers(question.id, newQuestion.answer, true)
+            createAnswers(question.id, newQuestion.answer, false)
             .then(answer => {
+                if(userData === null) return "User is not login!"
+
                 updateQuestionAnswers(question.id, answer.id)
-                updateUserQuestions()
-                updateUserAnswers()
+                updateQuestionnaireQuestion(idQuestionnaire, question.id)
+                updateQuestionnaireAnswer(idQuestionnaire, answer.id)
+                updateUserQuestions(userData.handle, question.id)
+                updateUserAnswers(userData.handle, answer.id)
             })
 
         })
@@ -58,7 +72,7 @@ const OneAnswer = ({id} : OneAnswer) => {
         onChange={updateNewQuestion('question')}/>
         </div>
         <div>
-            {error && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
+            {errorQuestion && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
         </div>
         
         <div >
@@ -68,6 +82,7 @@ const OneAnswer = ({id} : OneAnswer) => {
             focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6 
             ring-1 ring-inset ring-green-300" 
             onChange={updateNewQuestion('answer')}/>
+            {errorAnswer && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
         </div>
         <button 
             className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 

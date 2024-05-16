@@ -36,3 +36,14 @@ export const getQuestionById = (id: string) => {
 export const updateQuestionAnswers = (idQuestion: string, idAnswer: string) => {
     return update(ref(db), { [`questions/${idQuestion}/answers/${idAnswer}`]: true })
 }
+
+export interface QuestionAnswers { (answer: string[]): void }
+
+export const getQuestionAnswersLive = (id: string, listener: QuestionAnswers) => {
+
+  return onValue(ref(db, `Questions/${id}/answers`), (snapshot) => {
+    if (!snapshot.exists()) return [];
+    const answer = Object.keys(snapshot.val());
+    return listener(answer)
+  })
+}
