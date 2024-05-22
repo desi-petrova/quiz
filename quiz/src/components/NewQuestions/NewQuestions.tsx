@@ -1,17 +1,15 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import OneAnswer from '../OneAnswer/OneAnswer';
 import MoreAnswer from '../MoreAnswer/MoreAnswer';
 import OpenAnswer from '../OpenAnswer/OpenAnswer';
 
+interface NewQuestions {
+    idQuestionnaire: string,
+}
 
-
-const NewQuestions = () => {
+const NewQuestions = ({idQuestionnaire}: NewQuestions) => {
     
     const [questionType, setQuestionType] = useState('');
-    
-    const location = useLocation();
-    const idQuestion = location.state?.id
 
     const addQuestion = (field: string) => {
         setQuestionType(field);
@@ -20,13 +18,13 @@ const NewQuestions = () => {
     const renderQuestion = () => {
         switch (questionType) {
             case 'oneAnswer':
-                return <OneAnswer id={idQuestion}/>
+                return <OneAnswer idQuestionnaire={idQuestionnaire}/>
             case 'moreAnswer':
-                return <MoreAnswer id={idQuestion}/>
+                return <MoreAnswer idQuestionnaire={idQuestionnaire}/>
             case 'openAnswer':
-                return <OpenAnswer id={idQuestion}/>
+                return <OpenAnswer idQuestionnaire={idQuestionnaire}/>
             default:
-                return null; // If no button is clicked, or an unsupported button is clicked, return null
+                return null; 
         }
     }
 

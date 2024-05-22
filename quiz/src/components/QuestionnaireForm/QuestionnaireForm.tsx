@@ -6,14 +6,13 @@ import {MSG_FIELD_REQUIRED} from '../../common/constant.ts';
 import {updateUserQuestionnaires} from '../../services/users.service.ts';
 import { useNavigate } from 'react-router-dom';
 
-interface Questionnaire {
+export interface Questionnaire {
     title: string,
     description: string,
     time: number,
     status: string,
     background: string,
     picture: string,
-
 }
 
 export const QuestionnaireForm = () => {
@@ -51,7 +50,7 @@ export const QuestionnaireForm = () => {
             questionnaire.background,
             questionnaire.picture)
         .then(result => {
-            setQuestionnaire({
+            setQuestionnaire({    
             title: '',
             description: '',
             time: 0,
