@@ -4,6 +4,9 @@ export default {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
     extend: {
+        colors: {
+          'custom-yellow': '#fbe300',
+        },
     //   backgroundColor: {
     //   'primary': '#3490dc',
     //   'accent': '#ffed4a',
