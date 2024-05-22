@@ -1,5 +1,7 @@
 import { get, set, ref, query, equalTo, orderByChild, update, DataSnapshot, onValue, remove,push } from 'firebase/database';
 import { db } from '../config/firebaseConfig.ts';
+import { getAnswerById } from './answers.service.ts';
+import { object } from 'prop-types';
 
 export const createQuestion = (question: string, type: string, idQuestionnaire: string ) => {
 
@@ -28,6 +30,11 @@ export const getQuestionById = (id: string) => {
         const question = result.val();
         question.id = id;
         question.createdOn = new Date(question.createdOn);
+        if(question.answers){
+          question.answers = Object.keys(question.answers)
+        } else {
+          question.answers = []
+        }
         return question;
       })
       .catch(e => console.error(e));
@@ -41,7 +48,7 @@ export interface QuestionAnswers { (answer: string[]): void }
 
 export const getQuestionAnswersLive = (id: string, listener: QuestionAnswers) => {
 
-  return onValue(ref(db, `Questions/${id}/answers`), (snapshot) => {
+  return onValue(ref(db, `questions/${id}/answers`), (snapshot) => {
     if (!snapshot.exists()) return [];
     const answer = Object.keys(snapshot.val());
     return listener(answer)
