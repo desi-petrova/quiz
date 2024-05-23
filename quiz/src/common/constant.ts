@@ -20,4 +20,6 @@ export const MSG_INVALID_IMAGE_FORMAT = '*Invalid image format*';
 
 //login error messages
 export const MSG_WRONG_EMAIL_AND_PASSWORD = '*This user and password was not found*';
-;
+
+//timer
+export const MINUTE_SECONDS = 60;

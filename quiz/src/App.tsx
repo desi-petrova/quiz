@@ -13,6 +13,7 @@ import Login from './views/Login/Login';
 import CreateAccount from './components/CreateAccount/CreateAccount';
 import NewQuestionnaire from './views/NewQuestionnaire/NewQuestionnaire'
 import QuestionnaireForm from './components/QuestionnaireForm/QuestionnaireForm';
+import StartQuestionnaire from './components/StartQuestionnaire/StartQuestionnaire';
 
 function App() {
   const [userAuth, loading] = useAuthState(auth);
@@ -68,7 +69,9 @@ function App() {
           <Route path='/login' element={!appState.user && <Login />} />
           {/* <Route path='/new-chat' element={<AuthenticatedRoute><NewChat /></AuthenticatedRoute>} /> */}
           <Route path='/newQuestionnaire' element={<AuthenticatedRoute><NewQuestionnaire /></AuthenticatedRoute>} /> 
-          <Route path='/QuestionnaireForm' element={<AuthenticatedRoute><QuestionnaireForm /></AuthenticatedRoute>} />
+          <Route path='/questionnaireForm' element={<AuthenticatedRoute><QuestionnaireForm /></AuthenticatedRoute>} />
+          <Route path='/startQuestionnaire' element={<AuthenticatedRoute><StartQuestionnaire /></AuthenticatedRoute>} />
+
           <Route path='*' element={<NoPageFound />} />
         </Routes>
       </Body>}
