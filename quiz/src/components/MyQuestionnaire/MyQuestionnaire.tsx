@@ -5,18 +5,7 @@ import { getQuestionnaireById } from '../../services/questionnaire.service.ts';
 import { useNavigate } from 'react-router-dom';
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-
-
-
-export interface Questionnaire {
-    id: string,
-    title: string,
-    description: string,
-    time: number,
-    status: string,
-    background: string,
-    picture: string,
-}
+import { Questionnaire } from '../../common/typeScriptDefinitions.ts';
 
 const MyQuestionnaire = () => {
 
@@ -51,12 +40,12 @@ const MyQuestionnaire = () => {
             className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
             shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
             focus-visible:outline-purple-600"
-            onClick={() => navigate('/QuestionnaireForm')}>
+            onClick={() => navigate('/questionnaireForm')}>
                 New questionnaire
             </button>
         </div>
         <div className='flex'>
-            {questionnaires.map(questionnaire => {
+            {questionnaires.length > 0 && questionnaires.map(questionnaire => {
                 return(
                 <div key={questionnaire.id} className="card-questionnaire">
                     <div className="card-body ">

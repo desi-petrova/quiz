@@ -6,24 +6,9 @@ import {updateQuestionnaireQuestion, updateQuestionnaireAnswer} from "../../serv
 import AppContext, { UserState } from '../../context/AppContext';
 import { useContext } from 'react';
 import {updateUserQuestions, updateUserAnswers} from "../../services/users.service.ts"
+import {IdQuestionnaire, Answer, NewQuestion} from '../../common/typeScriptDefinitions.ts'
 
-interface MoreAnswers {
-    idQuestionnaire: string
-}
-
-interface Answer {
-    description: string,
-    wrong: boolean | null,
-}
-
-
-interface NewQuestion{
-    question: string,
-    type: string,
-}
-
-
-const MoreAnswers = ({idQuestionnaire}: MoreAnswers) => {
+const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
     
     const [newQuestion, setNewQuestion] = useState<NewQuestion>({
         question: '',

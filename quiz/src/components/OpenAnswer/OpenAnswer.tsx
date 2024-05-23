@@ -6,19 +6,10 @@ import {updateQuestionnaireQuestion, updateQuestionnaireAnswer} from "../../serv
 import AppContext, { UserState } from '../../context/AppContext';
 import { useContext } from 'react';
 import {updateUserQuestions, updateUserAnswers} from "../../services/users.service.ts"
+import {NewQuestions, IdQuestionnaire} from '../../common/typeScriptDefinitions.ts'
 
 
-interface NewQuestions{
-    question: string,
-    type: string,
-    answer: string,
-}
-
-interface OneAnswer {
-    idQuestionnaire: string
-}
-
-const OneAnswer = ({idQuestionnaire} : OneAnswer) => {
+const OneAnswer = ({idQuestionnaire} : IdQuestionnaire) => {
 
     const [newQuestion, setNewQuestion] = useState<NewQuestions>({
         question: '',
@@ -41,7 +32,6 @@ const OneAnswer = ({idQuestionnaire} : OneAnswer) => {
 
     const saveQuestion = () => {
 
-        console.log(idQuestionnaire)
         if(!newQuestion.question) return setErrorQuestion(true)
         if(!newQuestion.answer) return setErrorAnswer(true)
 
@@ -56,6 +46,12 @@ const OneAnswer = ({idQuestionnaire} : OneAnswer) => {
                 updateQuestionnaireAnswer(idQuestionnaire, answer.id)
                 updateUserQuestions(userData.handle, question.id)
                 updateUserAnswers(userData.handle, answer.id)
+
+                setNewQuestion({
+                    question: '',
+                    type: 'openAnswer',
+                    answer: '',
+                })
             })
 
         })
@@ -64,11 +60,12 @@ const OneAnswer = ({idQuestionnaire} : OneAnswer) => {
     
     return (
     <div className='w-full'>
-        <div><p>Question</p>
+        <div><p>Question:</p>
         <input 
         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400
         focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6 
         ring-1 ring-inset ring-gray-300"
+        value={newQuestion.question}
         onChange={updateNewQuestion('question')}/>
         </div>
         <div>
@@ -81,6 +78,7 @@ const OneAnswer = ({idQuestionnaire} : OneAnswer) => {
             className="block w-full m-1 rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400
             focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6 
             ring-1 ring-inset ring-green-300" 
+            value={newQuestion.answer}
             onChange={updateNewQuestion('answer')}/>
             {errorAnswer && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
         </div>

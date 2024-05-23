@@ -5,18 +5,7 @@ import { getAnswerById } from '../../services/answers.service';
 import { FcCheckmark } from "react-icons/fc";
 import { FaRegCircle } from "react-icons/fa6";
 import { shuffleArray } from '../../common/functions';
-
-
-interface AnswersProp {
-    questionId: string,
-    show: boolean
-}
-
-export interface Answers {
-    questionId: string, 
-    answer: string, 
-    wrong: boolean,
-}
+import {AnswersProp, Answers} from '../../common/typeScriptDefinitions.ts'
 
 const Answers = ({questionId, show}: AnswersProp) => {
     const { userData } = useContext<UserState>(AppContext);
@@ -41,7 +30,7 @@ const Answers = ({questionId, show}: AnswersProp) => {
     }, [userData])
 
     return (
-        <div>
+        <div className="px-4" >
         {answers.map((answer, indexAnswer) => {
         return(
             <label key={indexAnswer} className = "flex m-1">

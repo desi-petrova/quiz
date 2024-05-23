@@ -8,30 +8,7 @@ import { registerUser } from '../../services/auth.service';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AppContext from '../../context/AppContext';
-
-
-interface FormUser {
-  firstName: string,
-  lastName: string,
-  username: string,
-  password: string,
-  phone: string,
-  email: string,
-  role: string,
-}
-
-interface FormError {
-  error: boolean,
-  fieldErr: boolean,
-  firstNameLength: boolean,
-  lastNameLength: boolean,
-  usernameErr: boolean,
-  userNameTakenErr: boolean,
-  passwordErr: boolean,
-  phoneErr: boolean,
-  emailErr: boolean,
-  roleErr: boolean,
-}
+import {FormUser, FormError} from '../../common/typeScriptDefinitions.ts'
 
 const CreateAccount = () => {
 

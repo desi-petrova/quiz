@@ -5,20 +5,15 @@ import { useContext } from 'react';
 import {MSG_FIELD_REQUIRED} from '../../common/constant.ts';
 import {updateUserQuestionnaires} from '../../services/users.service.ts';
 import { useNavigate } from 'react-router-dom';
+import {Questionnaire} from '../../common/typeScriptDefinitions.ts'
 
-export interface Questionnaire {
-    title: string,
-    description: string,
-    time: number,
-    status: string,
-    background: string,
-    picture: string,
-}
+
 
 export const QuestionnaireForm = () => {
 
     const { userData } = useContext<UserState>(AppContext);
     const [questionnaire, setQuestionnaire] = useState<Questionnaire>({
+        id: '',
         title: '',
         description: '',
         time: 0,
@@ -50,7 +45,8 @@ export const QuestionnaireForm = () => {
             questionnaire.background,
             questionnaire.picture)
         .then(result => {
-            setQuestionnaire({    
+            setQuestionnaire({ 
+            id: '',       
             title: '',
             description: '',
             time: 0,

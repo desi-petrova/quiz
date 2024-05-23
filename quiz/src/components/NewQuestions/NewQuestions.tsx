@@ -2,12 +2,9 @@ import { useState } from 'react';
 import OneAnswer from '../OneAnswer/OneAnswer';
 import MoreAnswer from '../MoreAnswer/MoreAnswer';
 import OpenAnswer from '../OpenAnswer/OpenAnswer';
+import { IdQuestionnaire } from '../../common/typeScriptDefinitions';
 
-interface NewQuestions {
-    idQuestionnaire: string,
-}
-
-const NewQuestions = ({idQuestionnaire}: NewQuestions) => {
+const NewQuestions = ({idQuestionnaire}: IdQuestionnaire) => {
     
     const [questionType, setQuestionType] = useState('');
 
@@ -30,7 +27,7 @@ const NewQuestions = ({idQuestionnaire}: NewQuestions) => {
 
     return (
         <div className="w-1/2">
-        <div className="flex justify-center m-2">
+        <div className="flex justify-center m-2 ">
             <button className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
             shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
             focus-visible:outline-purple-600"
