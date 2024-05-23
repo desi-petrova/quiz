@@ -262,7 +262,7 @@ const CreateAccount = () => {
             <button
             type="button"
             className="block w-1/2 m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
-            shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+            shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
             focus-visible:outline-purple-600"
             onClick={saveNewUser}
           >

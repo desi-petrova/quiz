@@ -24,7 +24,7 @@ const QuestionDetails = ({idQuestionnaire}: IdQuestionnaire) => {
       }, [idQuestionnaire, userData])
 
     return (
-        <div className="w-full px-6">
+        <div className="w-full pl-5">
         {questions.map((question,indexQ) => {
             return(
                 <div key={indexQ} className="m-3">

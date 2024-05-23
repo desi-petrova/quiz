@@ -26,23 +26,20 @@ const NewQuestions = ({idQuestionnaire}: IdQuestionnaire) => {
     }
 
     return (
-        <div className="w-1/2">
+        <div className="w-1/2 mt-10">
         <div className="flex justify-center m-2 ">
             <button className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
-            shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-            focus-visible:outline-purple-600"
+            shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
              onClick={() => addQuestion('oneAnswer')} 
              >
                 Question with 1 answer</button>
             <button className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
-            shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-            focus-visible:outline-purple-600"
+            shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
             onClick={() => addQuestion('moreAnswer')}
             >
                 Question with 2 or more answer</button>
             <button className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
-            shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-            focus-visible:outline-purple-600"
+            shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
             onClick={() => addQuestion('openAnswer')}
             >
                 Question with open answer</button>

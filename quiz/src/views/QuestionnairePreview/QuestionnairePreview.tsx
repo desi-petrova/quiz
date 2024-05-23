@@ -8,7 +8,7 @@ const QuestionnairePreview = ({idQuestionnaire}: IdQuestionnaire) => {
 
 
     return ( 
-        <div className="w-1/2 m-5">
+        <div className="w-1/2 m-6">
         <QuestionnaireDetails idQuestionnaire={idQuestionnaire}/> 
         <QuestionDetails idQuestionnaire={idQuestionnaire} />
         <div className="flex justify-center">
