@@ -42,9 +42,9 @@ const QuestionnairePreview = ({idQuestionnaire}: QuestionnairePreview) => {
           })
         .catch(e => console.error(e));
 
-      }, [idQuestionnaire])
+      }, [idQuestionnaire, userData])
 
-
+      console.log(idQuestionnaire)
       useEffect(() => {
         getQuestionnaireQuestionsLive(idQuestionnaire, ((data: string[]) => {
             Promise.all(

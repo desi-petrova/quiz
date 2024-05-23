@@ -1,3 +1,4 @@
+import MyQuestionnaire from '../../components/MyQuestionnaire/MyQuestionnaire';
 import QuestionnaireForm from '../../components/QuestionnaireForm/QuestionnaireForm';
 
 const Home = () => {
@@ -5,7 +6,7 @@ const Home = () => {
     return (
         <div className="text-lg">
         Hello
-        <QuestionnaireForm />
+        <MyQuestionnaire />
         </div>
     );
 } 
