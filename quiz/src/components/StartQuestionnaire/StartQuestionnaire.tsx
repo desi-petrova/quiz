@@ -2,19 +2,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import {getQuestionnaireById} from '../../services/questionnaire.service.ts'
 import AppContext, { UserState } from '../../context/AppContext';
-import Timer from '../Timer/Timer.tsx';
+import { createCompletedQuiz } from '../../services/completedQuiz.service.ts';
+import { Questionnaire } from '../../common/typeScriptDefinitions.ts';
+import { updateUserCompletedQuiz } from '../../services/users.service.ts';
 
-
-export interface Questionnaire {
-    title: string,
-    description: string,
-    time: number,
-    status: string,
-    background: string,
-    picture: string,
-    questions: {[id: string]: boolean},
-    answers: {[id: string]: boolean},
-}
 
 export interface Questions{
     id: string,
@@ -42,6 +33,21 @@ const StartQuestionnaire = () => {
 
       }, [idQuestionnaire, userData])
 
+      const startQuiz = () => {
+        if(userData ==null) return;
+
+        createCompletedQuiz(questionnaire.id, questionnaire.title, userData.handle, questionnaire.background)
+        .then(result => {
+
+          updateUserCompletedQuiz(userData.handle, result.id)
+          navigate('/startQuestions', {state: {idQuestionnaire: idQuestionnaire, 
+                                     title: questionnaire.title, 
+                                     time:questionnaire.time,
+                                     idQuiz: result.id,}})
+          
+        })
+        
+      }
     return (
         <div className="w-3/5 mx-auto m-5">
         <div>
@@ -52,7 +58,8 @@ const StartQuestionnaire = () => {
         <button className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
         shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
         focus-visible:outline-purple-600 "
-        onClick={() => navigate('/startQuestions', {state: {idQuestionnaire: idQuestionnaire, title: questionnaire.title, time:questionnaire.time}})}>Start</button>
+        onClick={startQuiz}
+        >Start</button>
         </div>       
     )
 }

@@ -62,6 +62,8 @@ export interface Questions{
 export interface StartAnswers {
     questionId: string,
     type: string,
+    question: string,
+    idQuiz: string,
 }
 
 //Answers

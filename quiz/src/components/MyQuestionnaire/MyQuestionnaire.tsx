@@ -34,11 +34,11 @@ const MyQuestionnaire = () => {
 
     return (
     <div>
-        <h2 className="justify-center">My Questionnaires</h2>
-        <div>
+        <h2 className='text-3xl text-center font-bold'>My Questionnaires</h2>
+        <div className='flex justify-end'>
         <button
             className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
-            shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+            shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
             focus-visible:outline-purple-600"
             onClick={() => navigate('/questionnaireForm')}>
                 New questionnaire
@@ -51,10 +51,11 @@ const MyQuestionnaire = () => {
                     <div className="card-body ">
                     <h2 className="card-title justify-center">{questionnaire.title}</h2>
                     <p>Time: {questionnaire.time}</p>
-                    <button className="card-button hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-                        focus-visible:outline-purple-600"
-                        onClick={() => start(questionnaire.id)}
-                      >Start</button>
+                    <button className="card-button hover:bg-purple-500  
+                    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+                    focus-visible:outline-purple-500"
+                    onClick={() => start(questionnaire.id)}
+                    >Start</button>
                       <div className="card-actions justify-end">
                       <button className="card-button hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
                         focus-visible:outline-purple-600"
@@ -72,9 +73,6 @@ const MyQuestionnaire = () => {
             }
         </div>
     </div>
-        
-        
-
     )
 }
 

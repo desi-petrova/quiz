@@ -58,6 +58,20 @@ export const updateUserAnswers = (handle: string, idAnswer: string): Promise<voi
   return update(ref(db), { [`users/${handle}/myAnswers/${idAnswer}`]: true });
 };
 
+export const updateCompletedQuiz = (handle: string, idQuiz: string): Promise<void> => {
+  return update(ref(db), { [`users/${handle}/myCompletedQuiz/${idQuiz}`]: true });
+};
+
+export const updateUserCompletedQuiz = (handle: string, idQuiz: string ) => {
+  return update(ref(db), { [`users/${handle}/quizAnswers/${idQuiz}`]: true})
+}
+
+export const updateUserQuizAnswers = (handle: string, answer: string ) => {
+  return update(ref(db), { [`users/${handle}/quizAnswers/${answer}`]: true})
+}
+
+
+
 
 
 // export const setAllUsersUnseen = (members: string[], handle: string, key: string): void => {

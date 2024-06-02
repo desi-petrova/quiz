@@ -4,11 +4,13 @@ import { getAnswersByQuestionId } from "../../services/answers.service";
 import AppContext, { UserState } from "../../context/AppContext";
 import { FaRegCircle, FaRegSquare  } from "react-icons/fa6";
 import { IoMdCheckmarkCircleOutline, IoMdCheckboxOutline } from "react-icons/io";
-import { createMyAnswers, updateMyAnswers } from "../../services/myAnswers.service";
+import { createMyAnswers, updateMyAnswers } from "../../services/quizAnswers.service";
+import { updateUserQuizAnswers } from "../../services/users.service";
+import { updateQuizAnswers } from "../../services/completedQuiz.service";
 
 
 
-const StartAnswers = ({questionId, type} : StartAnswers) => {
+const StartAnswers = ({questionId, type, question, idQuiz} : StartAnswers) => {
 
     const { userData } = useContext<UserState>(AppContext);
     const [answers, setAnswers] = useState<MyAnswers[]>([]);
@@ -53,8 +55,14 @@ const StartAnswers = ({questionId, type} : StartAnswers) => {
     })}
         setAnswers([...updatedAnswers])
         if(myAnswerId == ''){
-            createMyAnswers(questionId, answers)
-            .then(result => setMyAnswerId(result.id))
+            // questionId: string, idQuiz: string, question: string, answers: MyAnswers[]
+            createMyAnswers(questionId, idQuiz, question, answers)
+            .then(result => {
+                if(userData ==null) return;
+              setMyAnswerId(result.id)
+              updateQuizAnswers(idQuiz, result.id)
+              updateUserQuizAnswers(userData.handle, result.id)  
+            })
             } else {
             updateMyAnswers(myAnswerId, answers)
                 }

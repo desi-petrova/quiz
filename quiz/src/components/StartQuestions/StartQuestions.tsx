@@ -11,7 +11,8 @@ const StartQuestions = () => {
     const location = useLocation();
     const idQuestionnaire = location.state?.idQuestionnaire
     const questionnaireTitle = location.state?.title
-    const questionnaireTime = location.state?.time 
+    const questionnaireTime = location.state?.time
+    const idQuiz = location.state?.idQuiz 
     const navigate = useNavigate()
 
     const [questions, setQuestions] = useState<Questions[]>([])
@@ -33,7 +34,7 @@ const StartQuestions = () => {
                 return(
                     <div key={indexQ}>
                          <p>{indexQ + 1}. {question.question}</p>
-                    <StartAnswers questionId={question.id} type={question.type} />
+                    <StartAnswers questionId={question.id} type={question.type} question={question.question} idQuiz={idQuiz}/>
                     </div>
                 )
             })}
