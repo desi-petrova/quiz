@@ -2077,10 +2077,6 @@ html {
   margin-top: 0.75rem;
 }
 
-.mt-1 {
-  margin-top: 0.25rem;
-}
-
 .block {
   display: block;
 }
@@ -2103,6 +2099,14 @@ html {
 
 .w-24 {
   width: 6rem;
+}
+
+.w-3\/5 {
+  width: 60%;
+}
+
+.w-4\/5 {
+  width: 80%;
 }
 
 .w-52 {
@@ -2287,11 +2291,6 @@ html {
   line-height: 2.25rem;
 }
 
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -2406,7 +2405,7 @@ html {
 
 .card-questionnaire {
   width: 250px;
-  height: 250px;
+  height: 200px;
   background-color: #fbe300;
   margin: 20px;
   border-radius: 20px
@@ -2419,7 +2418,7 @@ html {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
-  border-radius:10% ;
+  border-radius:10px ;
 }
 
 .card-button:hover {
@@ -2439,11 +2438,6 @@ html {
 .hover\:bg-green-500:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(34 197 94 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-indigo-500:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(99 102 241 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-purple-500:hover {
@@ -2495,6 +2489,10 @@ html {
 
 .focus-visible\:outline-offset-2:focus-visible {
   outline-offset: 2px;
+}
+
+.focus-visible\:outline-purple-500:focus-visible {
+  outline-color: #a855f7;
 }
 
 .focus-visible\:outline-purple-600:focus-visible {

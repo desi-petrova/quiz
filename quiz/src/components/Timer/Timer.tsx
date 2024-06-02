@@ -25,7 +25,9 @@ const Timer = ({ timeQuestionnaire }: Timer) => {
   return (
     <CountdownCircleTimer
       isPlaying
-      colors="#fbe300"
+      colors={'#fbe300'}
+      size={100}
+      strokeWidth={12}
       duration={initialRemainingTime}
       onComplete={(totalElapsedTime) => {
         const remainingTime = initialRemainingTime - totalElapsedTime;

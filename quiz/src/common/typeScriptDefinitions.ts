@@ -59,6 +59,11 @@ export interface Questions{
     answers: string[] 
 }
 
+export interface StartAnswers {
+    questionId: string,
+    type: string,
+}
+
 //Answers
 export  interface AnswersProp {
     questionId: string,
@@ -66,6 +71,7 @@ export  interface AnswersProp {
 }
 
 export interface Answers {
+    id: string,
     questionId: string, 
     answer: string, 
     wrong: boolean,
@@ -76,3 +82,11 @@ export interface Answer {
     wrong: boolean | null,
 }
 
+export interface MyAnswers {
+    id: string,
+    questionId: string, 
+    answer: string, 
+    wrong: boolean,
+    myAnswer: boolean,
+    myOpenAnswer: string,
+}

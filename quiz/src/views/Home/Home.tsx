@@ -4,7 +4,7 @@ import QuestionnaireForm from '../../components/QuestionnaireForm/QuestionnaireF
 const Home = () => {
 
     return (
-        <div className="text-lg">
+        <div className="w-4/5 mx-auto">
         Hello
         <MyQuestionnaire />
         </div>

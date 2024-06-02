@@ -32,3 +32,24 @@ export const getAnswerById = (id: string) => {
       })
       .catch(e => console.error(e));
   };
+
+  export const getAnswersByQuestionId =(idQuestion: string) => {
+
+    return get(query(ref(db,'answers'), orderByChild('questionId'), equalTo(idQuestion)))
+           .then(snapshot => {
+            if(!snapshot.exists) return []
+  
+          const answer = snapshot.val();
+          return Object.keys(answer).map(key => {
+            const result = answer[key];
+    
+            return {
+                ...result,
+                id: key,
+                createdOn: new Date(result.createdOn),
+                
+            };
+        });
+  
+           })
+  }
