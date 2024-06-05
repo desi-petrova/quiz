@@ -14,6 +14,7 @@ const StartQuestions = () => {
     const questionnaireTime = location.state?.time
     const idQuiz = location.state?.idQuiz 
     const navigate = useNavigate()
+    console.log(idQuiz)
 
     const [questions, setQuestions] = useState<Questions[]>([])
 
@@ -38,6 +39,14 @@ const StartQuestions = () => {
                     </div>
                 )
             })}
+        <div>
+        <button 
+            className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
+            shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+            focus-visible:outline-purple-600"
+            onClick={() => navigate('/reviewQuiz', {state: {idQuiz}})}
+            >Submit</button>
+        </div>
         </div>
 
     )

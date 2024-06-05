@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from "react";
-import { StartAnswers, MyAnswers } from "../../common/typeScriptDefinitions"
+import { StartAnswer, MyAnswers } from "../../common/typeScriptDefinitions"
 import { getAnswersByQuestionId } from "../../services/answers.service";
 import AppContext, { UserState } from "../../context/AppContext";
 import { FaRegCircle, FaRegSquare  } from "react-icons/fa6";
 import { IoMdCheckmarkCircleOutline, IoMdCheckboxOutline } from "react-icons/io";
-import { createMyAnswers, updateMyAnswers } from "../../services/quizAnswers.service";
+import { createMyAnswers, getQuizAnswerByQuizIdAndQuestionId, updateMyAnswers } from "../../services/quizAnswers.service";
 import { updateUserQuizAnswers } from "../../services/users.service";
 import { updateQuizAnswers } from "../../services/completedQuiz.service";
 
 
 
-const StartAnswers = ({questionId, type, question, idQuiz} : StartAnswers) => {
+const StartAnswers = ({questionId, type, question, idQuiz} : StartAnswer) => {
 
     const { userData } = useContext<UserState>(AppContext);
     const [answers, setAnswers] = useState<MyAnswers[]>([]);
@@ -19,22 +19,29 @@ const StartAnswers = ({questionId, type, question, idQuiz} : StartAnswers) => {
     useEffect(() => {
         getAnswersByQuestionId(questionId)
         .then(result => {
-            const updatedAnswers: MyAnswers[] = [];
-            result.map((answer) => {
-            updatedAnswers.push({...answer, myAnswer: false, myOpenAnswer: ''}) 
-        })
+            const updatedAnswers: MyAnswers[] = result.map((answer) => ({...answer, myAnswer: false, myOpenAnswer: ''}))
             setAnswers(updatedAnswers)
-        } )
+
+            return updatedAnswers
+        })
+        .then(() =>{
+            getQuizAnswerByQuizIdAndQuestionId(idQuiz, questionId)
+        .then(result => {
+            if(result == null) return []
+            setMyAnswerId(result[0].id)
+        })
+        })
         .catch(e => console.error(e))
-    },[questionId, type, userData])
-        
-    const correctAnswer = (correctAnswer: string) => (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    },[questionId, type, userData, idQuiz, myAnswerId])
+
+    const correctAnswer = (correctAnswer: string) => (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>  {
         e.preventDefault()
         const updatedAnswers: MyAnswers[] = [];
-        console.log(correctAnswer, type)
-        if(type == 'oneAnswer'){
-            console.log(1)
-        answers.map((answer) => {
+        console.log(answers)
+        console.log(myAnswerId)
+
+        if(type === 'óneAnswer'){
+        answers.forEach((answer) => {
             if(answer.id == correctAnswer && answer.myAnswer){
                 updatedAnswers.push({...answer, myAnswer: false}) 
             }else if(answer.id == correctAnswer && !answer.myAnswer){
@@ -42,31 +49,33 @@ const StartAnswers = ({questionId, type, question, idQuiz} : StartAnswers) => {
             }else {
                 updatedAnswers.push({...answer, myAnswer: false})
             }
-        })
-    } else {
-        answers.map((answer) => {
-            if(answer.id == correctAnswer && answer.myAnswer){
-                updatedAnswers.push({...answer, myAnswer: false}) 
-            }else if(answer.id == correctAnswer && !answer.myAnswer){
-                    updatedAnswers.push({...answer, myAnswer: true})
-            } else {
-                updatedAnswers.push({...answer})
-            }
-    })}
-        setAnswers([...updatedAnswers])
-        if(myAnswerId == ''){
-            // questionId: string, idQuiz: string, question: string, answers: MyAnswers[]
-            createMyAnswers(questionId, idQuiz, question, answers)
-            .then(result => {
-                if(userData ==null) return;
-              setMyAnswerId(result.id)
-              updateQuizAnswers(idQuiz, result.id)
-              updateUserQuizAnswers(userData.handle, result.id)  
-            })
-            } else {
-            updateMyAnswers(myAnswerId, answers)
+        })} else {
+            answers.map((answer) => {
+                if(answer.id == correctAnswer && answer.myAnswer){
+                    updatedAnswers.push({...answer, myAnswer: false}) 
+                }else if(answer.id == correctAnswer && !answer.myAnswer){
+                        updatedAnswers.push({...answer, myAnswer: true})
+                } else {
+                    updatedAnswers.push({...answer})
                 }
+            })}
+    
+        setAnswers([...updatedAnswers])
+        updateMyAnswers(myAnswerId, updatedAnswers)
      }
+
+     const openAnswer = (e: React.ChangeEvent<HTMLInputElement> ) => {
+      //  e.preventDefault()
+       const updatedAnswer = answers.map(answer => {
+        return {
+            ...answer,
+            myOpenAnswer: e.target.value
+        };
+    });
+
+    setAnswers(updatedAnswer)
+    updateMyAnswers(myAnswerId, updatedAnswer)
+    }
 
     return (
         <div className="px-4" >
@@ -92,14 +101,7 @@ const StartAnswers = ({questionId, type, question, idQuiz} : StartAnswers) => {
                     <div>
                     <input className="input input-bordered input-warning w-full mt-2 mb-2"
                     value={answer.myOpenAnswer} 
-                    onChange={(e) => {
-                    setAnswers([{...answer, myOpenAnswer: e.target.value}])
-                    if(myAnswerId == ''){
-                        createMyAnswers(questionId, answers)
-                        .then(result => setMyAnswerId(result.id))
-                        } else {
-                        updateMyAnswers(myAnswerId, answers)
-                            }}}/>
+                    onChange={openAnswer}/>
                     </div>
                     ): ''}
         </div>   

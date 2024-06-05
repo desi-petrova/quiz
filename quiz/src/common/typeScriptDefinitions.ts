@@ -35,8 +35,8 @@ export interface Questionnaire {
     status: string,
     background: string,
     picture: string,
-    questions?: {[id: string]: boolean},
-    answers?: {[id: string]: boolean},
+    questions?: [id: string],
+    answers?: [id: string],
 }
 
 //Questions
@@ -59,7 +59,7 @@ export interface Questions{
     answers: string[] 
 }
 
-export interface StartAnswers {
+export interface StartAnswer {
     questionId: string,
     type: string,
     question: string,
@@ -91,4 +91,24 @@ export interface MyAnswers {
     wrong: boolean,
     myAnswer: boolean,
     myOpenAnswer: string,
+}
+
+//Quiz
+
+export interface Quiz{
+    id: string,
+    idQuestionnaire: string,
+    title: string,   
+    user: string,
+    background: string,
+    answers: string[],
+}
+
+export interface QuizMyAnswer{
+    id: string,
+    idQuiz: string,
+    questionId: string,
+    question: string,
+    typeQuestion: string,
+    answers: [{answer: string, myAnswer: boolean, wrong: boolean, myOpenAnswer: string, }],
 }

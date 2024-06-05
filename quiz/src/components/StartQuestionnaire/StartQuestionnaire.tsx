@@ -2,9 +2,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import {getQuestionnaireById} from '../../services/questionnaire.service.ts'
 import AppContext, { UserState } from '../../context/AppContext';
-import { createCompletedQuiz } from '../../services/completedQuiz.service.ts';
-import { Questionnaire } from '../../common/typeScriptDefinitions.ts';
+import { createCompletedQuiz, updateQuizAnswers } from '../../services/completedQuiz.service.ts';
+import { MyAnswers, Questionnaire } from '../../common/typeScriptDefinitions.ts';
 import { updateUserCompletedQuiz } from '../../services/users.service.ts';
+import { getQuestionById, getQuestionsByQuestionnaireId } from '../../services/question.service.ts';
+import { getAnswerById } from '../../services/answers.service.ts';
+import { createMyAnswers } from '../../services/quizAnswers.service.ts';
 
 
 export interface Questions{
@@ -37,19 +40,33 @@ const StartQuestionnaire = () => {
         if(userData ==null) return;
 
         createCompletedQuiz(questionnaire.id, questionnaire.title, userData.handle, questionnaire.background)
-        .then(result => {
+        .then(resultQuiz => {
 
-          updateUserCompletedQuiz(userData.handle, result.id)
+          updateUserCompletedQuiz(userData.handle, resultQuiz.id)
+          if(!questionnaire.questions ) return
+          questionnaire.questions.forEach(question => {
+            getQuestionById(question)
+            .then(res => {
+             Promise.all(res.answers.map((answer: string) => {
+                return getAnswerById(answer)
+              }))
+              .then(el => createMyAnswers(res.id, resultQuiz.id, res.question, res.type, [...el]))
+              .then(idMyAnswer => {
+                updateQuizAnswers(resultQuiz.id, idMyAnswer.id)})
+              
+            })
+            .catch(e => console.error(e))
+          })
           navigate('/startQuestions', {state: {idQuestionnaire: idQuestionnaire, 
                                      title: questionnaire.title, 
                                      time:questionnaire.time,
-                                     idQuiz: result.id,}})
+                                     idQuiz: resultQuiz.id,}})
           
         })
         
       }
     return (
-        <div className="w-3/5 mx-auto m-5">
+        <div>
         <div>
         <h3 className='text-2xl text-center m-1'>{questionnaire.title}</h3>
         <p>{questionnaire.description}</p>
