@@ -28,11 +28,6 @@ export const getCompletedQuizId = (id: string) => {
         const quiz = result.val();
         quiz.id = id;
         quiz.createdOn = new Date(quiz.createdOn);
-        if(quiz.questions){
-          quiz.questions = Object.keys(quiz.questions)
-        } else {
-          quiz.questions = []
-        }
 
         if(quiz.answers){
           quiz.answers = Object.keys(quiz.answers)

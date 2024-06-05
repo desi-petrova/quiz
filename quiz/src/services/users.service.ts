@@ -63,7 +63,7 @@ export const updateCompletedQuiz = (handle: string, idQuiz: string): Promise<voi
 };
 
 export const updateUserCompletedQuiz = (handle: string, idQuiz: string ) => {
-  return update(ref(db), { [`users/${handle}/quizAnswers/${idQuiz}`]: true})
+  return update(ref(db), { [`users/${handle}/myQuiz/${idQuiz}`]: true})
 }
 
 export const updateUserQuizAnswers = (handle: string, answer: string ) => {
