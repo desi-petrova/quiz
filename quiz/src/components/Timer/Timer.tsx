@@ -4,9 +4,10 @@ import { MINUTE_SECONDS } from "../../common/constant";
 
 interface Timer {
     timeQuestionnaire: number,
+    idQuiz: string,
 }
 
-const Timer = ({ timeQuestionnaire }: Timer) => {
+const Timer = ({ timeQuestionnaire, idQuiz }: Timer) => {
     console.log(timeQuestionnaire)
   const initialRemainingTime = timeQuestionnaire * MINUTE_SECONDS;
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const Timer = ({ timeQuestionnaire }: Timer) => {
       onComplete={(totalElapsedTime) => {
         const remainingTime = initialRemainingTime - totalElapsedTime;
         if (remainingTime <= MINUTE_SECONDS) {
-          navigate('/');
+          navigate('/reviewQuiz', {state: {idQuiz}});
         }
         return { shouldRepeat: remainingTime > 0 };
       }}

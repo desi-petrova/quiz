@@ -40,7 +40,7 @@ const StartAnswers = ({questionId, type, question, idQuiz} : StartAnswer) => {
         console.log(answers)
         console.log(myAnswerId)
 
-        if(type === 'óneAnswer'){
+        if(type === 'oneAnswer'){
         answers.forEach((answer) => {
             if(answer.id == correctAnswer && answer.myAnswer){
                 updatedAnswers.push({...answer, myAnswer: false}) 
@@ -84,14 +84,14 @@ const StartAnswers = ({questionId, type, question, idQuiz} : StartAnswer) => {
         <label key={indexAnswer} className = "flex m-1">
             <div className="pt-1">
             {type == 'oneAnswer' ? (
-            <div>
+            <div className="flex">
             <button onClick={correctAnswer(answer.id)}> 
             {answer.myAnswer ? <IoMdCheckmarkCircleOutline size={20} color="#008000"/> : <FaRegCircle size={15}  />} 
             </button>
             <p className="ml-4">{answer.answer}</p>
             </div>
             ) : (type == 'MoreAnswer') ? (
-                <div>
+                <div className="flex">
                 <button onClick={correctAnswer(answer.id)} > 
                 {answer.myAnswer ? <IoMdCheckboxOutline size={20} color="#008000"/> : <FaRegSquare size={15}  />}  
                 </button>

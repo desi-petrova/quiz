@@ -29,7 +29,7 @@ const QuizAnswer = ({answerId, num}: QuizAnswer) => {
                     <div className="m-5">
                         {quizAnswer.typeQuestion == 'oneAnswer' ? (
                             <div className='flex'>
-                                <div className='m-1'>{myAnswer.myAnswer == true && myAnswer.wrong == false ? 
+                                <div className='m-1 pt-0.5'>{myAnswer.myAnswer == true && myAnswer.wrong == false ? 
                                 <IoMdCheckmarkCircleOutline size={17} color="#008000"/> :
                                 myAnswer.myAnswer == true && myAnswer.wrong == true ?
                                 <FaRegCircleXmark size={17} color="#d90429" /> : <FaRegCircle size={12}  />}</div>
@@ -40,7 +40,7 @@ const QuizAnswer = ({answerId, num}: QuizAnswer) => {
                             </div>
                         ) : quizAnswer.typeQuestion == 'MoreAnswer' ? (
                             <div className='flex'>
-                                <div className='m-1'>{myAnswer.myAnswer == true && myAnswer.wrong == false ? 
+                                <div className='m-1 pt-0.5'>{myAnswer.myAnswer == true && myAnswer.wrong == false ? 
                             <IoMdCheckboxOutline size={17} color="#008000"/> :
                             myAnswer.myAnswer == true && myAnswer.wrong == true ?
                             <FiXSquare size={17} color="#d90429" /> : <FaRegSquare size={12}  />}</div>

@@ -66,8 +66,8 @@ const StartQuestionnaire = () => {
         
       }
     return (
-        <div>
-        <div>
+        <div className="w-3/5 mx-auto m-5">
+        <div className="m-3">
         <h3 className='text-2xl text-center m-1'>{questionnaire.title}</h3>
         <p>{questionnaire.description}</p>
         <p>Time: {questionnaire.time}minutes</p>

@@ -9,12 +9,11 @@ import Timer from '../Timer/Timer';
 const StartQuestions = () => {
 
     const location = useLocation();
-    const idQuestionnaire = location.state?.idQuestionnaire
-    const questionnaireTitle = location.state?.title
-    const questionnaireTime = location.state?.time
-    const idQuiz = location.state?.idQuiz 
+    const idQuestionnaire = location.state.idQuestionnaire
+    const questionnaireTitle = location.state.title
+    const questionnaireTime = location.state.time
+    const idQuiz = location.state.idQuiz 
     const navigate = useNavigate()
-    console.log(idQuiz)
 
     const [questions, setQuestions] = useState<Questions[]>([])
 
@@ -25,9 +24,9 @@ const StartQuestions = () => {
     }, [])
 
     return (
-        <div>
+        <div className="w-3/5 mx-auto m-5">
         <div className='flex justify-end'>
-        <Timer timeQuestionnaire={questionnaireTime}/>
+        <Timer timeQuestionnaire={questionnaireTime} idQuiz={idQuiz}/>
         </div>
         <h4 className='text-2xl text-center m-1'>{questionnaireTitle}</h4>
 
