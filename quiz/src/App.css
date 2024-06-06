@@ -44,13 +44,53 @@
 .card-button {
   background-color: transparent;
   color: purple;
-  padding: 5px 10px;
   font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  border-radius:10px ;
 }
 
-.card-button:hover {
+.search {
+  position: absolute;
+  height: fit-content;
+  width: 320px;
+  max-height: 200px;
+  overflow-y: scroll;
+  z-Index: 99;        
+}
+
+.search::-webkit-scrollbar {
+  display: none;
+}
+
+.search {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.searchBox {
+  display: flex;
+  width: 320px;
+  margin-top: 1;
+  background-color: white;
+}
+
+.searchBox:hover {
   color: white;
+  background-color: #d2b7e5;
+}
+
+.scrollbar {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  width: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: rgb(202, 213, 227);
+  border-radius: 24px;
 }

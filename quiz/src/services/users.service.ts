@@ -70,6 +70,9 @@ export const updateUserQuizAnswers = (handle: string, answer: string ) => {
   return update(ref(db), { [`users/${handle}/quizAnswers/${answer}`]: true})
 }
 
+export const getAllUsersData = (): Promise<DataSnapshot> => {
+  return get(query(ref(db, 'users')));
+};
 
 
 
@@ -81,10 +84,6 @@ export const updateUserQuizAnswers = (handle: string, answer: string ) => {
 //     }
 //   });
 // }
-
-// export const getAllUsersData = (): Promise<DataSnapshot> => {
-//   return get(query(ref(db, 'users')));
-// };
 
 // export const getAllUsers = (): Promise<string[]> => {
 //   return get(ref(db, 'users'))

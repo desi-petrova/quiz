@@ -1,3 +1,5 @@
+import { BlobOptions } from "buffer";
+
 //Create Account
 export interface FormUser {
     firstName: string,
@@ -21,6 +23,32 @@ export interface FormError {
     emailErr: boolean,
     roleErr: boolean,
   }
+
+ //search 
+export interface User {
+    handle: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    profilePhoto: string;
+}
+
+export interface SearchUsersBoxProps {
+    userName: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    // imageSrc: string;
+    setOpen: (value: boolean) => void;
+    setSearchValue: (value: string) => void;
+    updateNewUsers?: (user: string) => void;
+  }
+
+export interface SearchUsersProps {
+    updateNewUsers?: (user: string) => void;
+    
+}
+
 
 //Questionnaires
 export interface IdQuestionnaire {
@@ -111,4 +139,17 @@ export interface QuizMyAnswer{
     question: string,
     typeQuestion: string,
     answers: [{answer: string, myAnswer: boolean, wrong: boolean, myOpenAnswer: string, }],
+}
+
+//visibleIcon
+
+export interface VisibleIcon {
+    edit: boolean,
+    delete: boolean,
+    questionnaireId: string,
+}
+
+//UsersList
+export interface UsersListProps {
+    handle: string
 }
