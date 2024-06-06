@@ -74,6 +74,9 @@ export const getAllUsersData = (): Promise<DataSnapshot> => {
   return get(query(ref(db, 'users')));
 };
 
+export const updateUserUpcomingQuizzes = (handle: string, idQuestionnaire: string ) => {
+  return update(ref(db), { [`users/${handle}/upcomingQuizzes/${idQuestionnaire}`]: true})
+}
 
 
 

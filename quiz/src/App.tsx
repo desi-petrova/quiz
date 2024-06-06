@@ -16,6 +16,7 @@ import QuestionnaireForm from './components/QuestionnaireForm/QuestionnaireForm'
 import StartQuestionnaire from './components/StartQuestionnaire/StartQuestionnaire';
 import StartQuestions from './components/StartQuestions/StartQuestions';
 import ReviewQuiz from './components/ReviewQuiz/ReviewQuiz';
+import SendQuiz from './components/SendQuiz/SendQuiz';
 
 function App() {
   const [userAuth, loading] = useAuthState(auth);
@@ -75,6 +76,8 @@ function App() {
           <Route path='/startQuestionnaire' element={<AuthenticatedRoute><StartQuestionnaire /></AuthenticatedRoute>} />
           <Route path='/startQuestions' element={<AuthenticatedRoute><StartQuestions /></AuthenticatedRoute>} />
           <Route path='/reviewQuiz' element={<AuthenticatedRoute><ReviewQuiz /></AuthenticatedRoute>} />
+          <Route path='/sendQuiz' element={<AuthenticatedRoute><SendQuiz /></AuthenticatedRoute>} />
+
           <Route path='*' element={<NoPageFound />} />
         </Routes>
       </Body>}
