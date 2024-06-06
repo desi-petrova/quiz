@@ -1,12 +1,16 @@
+import { useContext } from 'react';
 import MyQuestionnaire from '../../components/MyQuestionnaire/MyQuestionnaire';
-import QuestionnaireForm from '../../components/QuestionnaireForm/QuestionnaireForm';
+import AppContext, { UserState } from '../../context/AppContext';
+import UpcomingQuizzes from '../../components/UpcomingQuizzes/UpcomingQuizzes';
 
 const Home = () => {
+    const { userData } = useContext<UserState>(AppContext);
 
     return (
         <div className="w-4/5 mx-auto">
         Hello
-        <MyQuestionnaire />
+        {userData && <MyQuestionnaire />}
+        {userData && <UpcomingQuizzes />}
         </div>
     );
 } 

@@ -78,6 +78,17 @@ export const updateUserUpcomingQuizzes = (handle: string, idQuestionnaire: strin
   return update(ref(db), { [`users/${handle}/upcomingQuizzes/${idQuestionnaire}`]: true})
 }
 
+export interface UserUpcomingQuizzesLive { (questionnaires: string[]): void }
+
+export const getUserUpcomingQuizzesLive = (handle: string, listener: UserUpcomingQuizzesLive) => {
+
+  return onValue(ref(db, `users/${handle}/upcomingQuizzes`), (snapshot) => {
+    if (!snapshot.exists()) return [];
+    const myQuestionnaires = Object.keys(snapshot.val());
+    return listener(myQuestionnaires)
+  })
+}
+
 
 
 // export const setAllUsersUnseen = (members: string[], handle: string, key: string): void => {
