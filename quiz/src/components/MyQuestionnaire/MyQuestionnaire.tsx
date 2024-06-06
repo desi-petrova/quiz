@@ -3,15 +3,23 @@ import {getUserQuestionnaireLive} from '../../services/users.service.ts'
 import AppContext, { UserState } from '../../context/AppContext';
 import { getQuestionnaireById } from '../../services/questionnaire.service.ts';
 import { useNavigate } from 'react-router-dom';
-import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-import { Questionnaire } from '../../common/typeScriptDefinitions.ts';
+import { Questionnaire, VisibleIcon } from '../../common/typeScriptDefinitions.ts';
+import { RiEdit2Fill, RiEdit2Line } from "react-icons/ri";
+import { MdDeleteOutline } from "react-icons/md";
+import SendQuiz from '../SendQuiz/SendQuiz.tsx';
+
 
 const MyQuestionnaire = () => {
 
     const { userData } = useContext<UserState>(AppContext);
     const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([])
     const navigate = useNavigate();
+    const [visibleIcon, setVisibleIcon] = useState<VisibleIcon>({
+        edit: false,
+        delete: false,
+        questionnaireId: '',
+    })
 
 
     useEffect(() => {
@@ -27,10 +35,26 @@ const MyQuestionnaire = () => {
             .catch(e => console.error(e));
         })
     )
-      }, [])
+      }, [userData])
 
       const edit = (id: string) => navigate('/newQuestionnaire', {state: {id}})
       const start= (idQuestionnaire: string) => navigate('/startQuestionnaire', {state: {idQuestionnaire}})
+
+      const onSeeColor = (field: string, id: string) => {
+        setVisibleIcon({
+            ...visibleIcon,
+            [field]: true,
+            questionnaireId: id,
+        })
+      }
+
+      const onHideColor = (field: string,) => {
+        setVisibleIcon({
+            ...visibleIcon,
+            [field]: false,
+            questionnaireId: ''
+        })
+      }
 
     return (
     <div>
@@ -56,15 +80,20 @@ const MyQuestionnaire = () => {
                     focus-visible:outline-purple-500"
                     onClick={() => start(questionnaire.id)}
                     >Start</button>
-                      <div className="card-actions justify-end">
-                      <button className="card-button hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-                        focus-visible:outline-purple-600"
-                        onClick={() => edit(questionnaire.id)}
-                      ><CiEdit size={25}/></button>
-                      <button className="card-button hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-                        focus-visible:outline-purple-600"
-                        onClick={() => edit(questionnaire.id)}
-                      ><MdDelete size={25}/> </button>
+                      <div className="card-actions justify-end m-2">
+                      <SendQuiz idQuestionnaire={questionnaire.id} />
+                      <button className="card-button" 
+                        onMouseEnter={() => onSeeColor('edit', questionnaire.id)}
+                        onMouseLeave={() => onHideColor('edit')}
+                        onClick={() => edit(questionnaire.id)}>
+                        {(visibleIcon.edit && visibleIcon.questionnaireId ==questionnaire.id) ?  <RiEdit2Fill size={25} /> : <RiEdit2Line size={25}/>} 
+                        </button>
+                      <button className="card-button"
+                      onMouseEnter={() => onSeeColor('delete', questionnaire.id)}
+                      onMouseLeave={() => onHideColor('delete')}
+                      onClick={() => edit(questionnaire.id)}
+                      >{(visibleIcon.delete && visibleIcon.questionnaireId ==questionnaire.id) ?  <MdDelete size={25}/> : <MdDeleteOutline size={25}/>}
+                      </button>
                       </div>
                       </div>
                     </div>                   
