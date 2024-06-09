@@ -7,10 +7,12 @@ export default {
         colors: {
           'custom-yellow': '#fbe300',
         },
-    //   backgroundColor: {
-    //   'primary': '#3490dc',
-    //   'accent': '#ffed4a',
-    // }
+        backgroundOpacity: {
+          '55': '0.55',
+          '65': '0.65',
+          '75': '0.75',
+          '85': '0.85',
+         }
     },
   },
   // Temporarily disable or modify the purge option

@@ -7,11 +7,16 @@ const Home = () => {
     const { userData } = useContext<UserState>(AppContext);
 
     return (
-        <div className="w-4/5 mx-auto">
+        <div className="relative h-screen">
+        <div className="absolute inset-0 bg-[url('/public/7233949.jpg')] bg-cover bg-center ">
+        <div className="absolute inset-0 bg-white opacity-55"></div>
+        <div className="relative z-10 w-4/5 mx-auto ">
         Hello
         {userData && <MyQuestionnaire />}
         {userData && <UpcomingQuizzes />}
         </div>
+        </div>       
+        </div> 
     );
 } 
 
