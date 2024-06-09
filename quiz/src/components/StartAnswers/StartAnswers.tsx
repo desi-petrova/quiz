@@ -4,13 +4,12 @@ import { getAnswersByQuestionId } from "../../services/answers.service";
 import AppContext, { UserState } from "../../context/AppContext";
 import { FaRegCircle, FaRegSquare  } from "react-icons/fa6";
 import { IoMdCheckmarkCircleOutline, IoMdCheckboxOutline } from "react-icons/io";
-import { createMyAnswers, getQuizAnswerByQuizIdAndQuestionId, updateMyAnswers } from "../../services/quizAnswers.service";
-import { updateUserQuizAnswers } from "../../services/users.service";
-import { updateQuizAnswers } from "../../services/completedQuiz.service";
+import { getQuizAnswerByQuizIdAndQuestionId, updateMyAnswers } from "../../services/quizAnswers.service";
+import { shuffleArray } from "../../common/functions";
 
 
 
-const StartAnswers = ({questionId, type, question, idQuiz} : StartAnswer) => {
+const StartAnswers = ({questionId, type, idQuiz} : StartAnswer) => {
 
     const { userData } = useContext<UserState>(AppContext);
     const [answers, setAnswers] = useState<MyAnswers[]>([]);
@@ -20,7 +19,8 @@ const StartAnswers = ({questionId, type, question, idQuiz} : StartAnswer) => {
         getAnswersByQuestionId(questionId)
         .then(result => {
             const updatedAnswers: MyAnswers[] = result.map((answer) => ({...answer, myAnswer: false, myOpenAnswer: ''}))
-            setAnswers(updatedAnswers)
+            const shuffledAnswers = shuffleArray(updatedAnswers);
+            setAnswers(shuffledAnswers)
 
             return updatedAnswers
         })

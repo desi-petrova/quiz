@@ -14,7 +14,6 @@ const Answers = ({questionId, show}: AnswersProp) => {
 
     useEffect(()=> {
         getQuestionAnswersLive(questionId, (data: string[]) => {
-            console.log(data)
             Promise.all(
                 data.map((answerId: string) => {
                     return getAnswerById(answerId)
