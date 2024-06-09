@@ -6,7 +6,8 @@ import {MSG_FIELD_REQUIRED} from '../../common/constant.ts';
 import {updateUserQuestionnaires} from '../../services/users.service.ts';
 import { useNavigate } from 'react-router-dom';
 import {Questionnaire} from '../../common/typeScriptDefinitions.ts'
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 
 export const QuestionnaireForm = () => {
@@ -82,11 +83,16 @@ export const QuestionnaireForm = () => {
         {error && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
          </div>
          <div className="m-2.5">
-          <textarea 
-          value={questionnaire.description}
-          className="textarea textarea-bordered w-full" 
-          placeholder="Write description here..."
-          onChange={updateQuestionnaires('description')}></textarea>
+        <ReactQuill
+            theme="snow"
+            value={questionnaire.description}
+            placeholder="Write your description here..."
+            onChange={(_, delta, source, editor) => {
+
+              const data = editor.getHTML();
+              return setQuestionnaire({ ...questionnaire, description: data });
+            }}
+          />
          </div>
          <div className="m-2.5">
             <p>Time: </p>

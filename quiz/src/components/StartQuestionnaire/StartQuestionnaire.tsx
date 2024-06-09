@@ -3,11 +3,12 @@ import { useContext, useEffect, useState } from 'react';
 import {getQuestionnaireById} from '../../services/questionnaire.service.ts'
 import AppContext, { UserState } from '../../context/AppContext';
 import { createCompletedQuiz, updateQuizAnswers } from '../../services/completedQuiz.service.ts';
-import { MyAnswers, Questionnaire } from '../../common/typeScriptDefinitions.ts';
+import { Questionnaire } from '../../common/typeScriptDefinitions.ts';
 import { updateUserCompletedQuiz } from '../../services/users.service.ts';
-import { getQuestionById, getQuestionsByQuestionnaireId } from '../../services/question.service.ts';
+import { getQuestionById } from '../../services/question.service.ts';
 import { getAnswerById } from '../../services/answers.service.ts';
 import { createMyAnswers } from '../../services/quizAnswers.service.ts';
+import parse from 'html-react-parser';
 
 
 export interface Questions{
@@ -69,7 +70,7 @@ const StartQuestionnaire = () => {
         <div className="w-3/5 mx-auto m-5">
         <div className="m-3">
         <h3 className='text-2xl text-center m-1'>{questionnaire.title}</h3>
-        <p>{questionnaire.description}</p>
+        <p>{parse(questionnaire.description)}</p>
         <p>Time: {questionnaire.time}minutes</p>
         </div>
         <button className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
@@ -83,20 +84,3 @@ const StartQuestionnaire = () => {
 
 export default StartQuestionnaire;
 
-//https://www.npmjs.com/package/react-timer-wrapper
-
-{/* <CountdownCircleTimer
-        {...timerProps}
-        colors="#EF798A"
-        duration={hourSeconds}
-        initialRemainingTime={remainingTime % hourSeconds}
-        onComplete={(totalElapsedTime) => ({
-          shouldRepeat: remainingTime - totalElapsedTime > minuteSeconds
-        })}
-      >
-        {({ elapsedTime, color }) => (
-          <span style={{ color }}>
-            {renderTime("minutes", getTimeMinutes(hourSeconds - elapsedTime))}
-          </span>
-        )}
-      </CountdownCircleTimer> */}
