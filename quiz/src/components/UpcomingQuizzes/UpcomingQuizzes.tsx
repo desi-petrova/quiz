@@ -33,7 +33,9 @@ const UpcomingQuizzes = () => {
 
     return(
         <div className='mt-8'>
-        <h2 className="text-4xl text-center font-bold text-[#6B21A8]">U p c o m i n g &nbsp;&nbsp;&nbsp; q u i z z e s</h2>
+        {questionnaires.length > 0 && <h2 
+        className="text-4xl text-center font-bold text-[#6B21A8]">
+            U p c o m i n g &nbsp;&nbsp;&nbsp; q u i z z e s</h2>}
         <div className='flex justify-end'>
         </div>
         <div className='flex'>

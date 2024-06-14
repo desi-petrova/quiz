@@ -125,16 +125,11 @@ const CreateAccount = () => {
 
   return (
   <>
- <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
-      <div
-        className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
-        aria-hidden="true"
-      >
-      </div>
+ <div className="isolate bg-white m-10 ">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Registration</h2>
+        <h2 className="text-4xl text-center font-bold">Registration</h2>
       </div>
-      <form className="mx-auto mt-16 max-w-xl sm:mt-20">
+      <form className="mx-auto mt-20 max-w-xl sm:mt-20">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <div className="mt-2.5">
@@ -144,9 +139,8 @@ const CreateAccount = () => {
                 id="first-name"
                 autoComplete="given-name"
                 placeholder="First name"
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
-                focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6 
-                ${formError.firstNameLength ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
+                className={`input input-bordered w-full
+                ${formError.firstNameLength ? 'input-error' : 'input-warning'}`}
                 onChange={updateNewUser('firstName')}
                 />
                 {formError.firstNameLength && <p className="text-red-500">{MSG_NAMES_LENGTH}</p>}
@@ -163,9 +157,8 @@ const CreateAccount = () => {
                 id="last-name"
                 autoComplete="family-name"
                 placeholder='Last name'
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
-                focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6
-                ${formError.lastNameLength ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
+                className={`input input-bordered w-full
+                ${formError.lastNameLength ? 'input-error' : 'input-warning'}`}
                 onChange={updateNewUser('lastName')}
               />
               {formError.lastNameLength && <p className="text-red-500">{MSG_NAMES_LENGTH}</p>}
@@ -181,9 +174,8 @@ const CreateAccount = () => {
                 id="username"
                 autoComplete="username"
                 placeholder="Username"
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
-                focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6
-                ${formError.usernameErr ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
+                className={`input input-bordered w-full
+                ${formError.usernameErr ? 'input-error' : 'input-warning'}`}
                 onChange={updateNewUser('username')}
               />
               {formError.usernameErr && <p className="text-red-500">{MSG_USERNAMES_LENGTH}</p>}
@@ -199,9 +191,8 @@ const CreateAccount = () => {
                 id="password"
                 autoComplete="password"
                 placeholder="Password"
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
-                focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6
-                ${formError.passwordErr ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
+                className={`input input-bordered w-full
+                ${formError.passwordErr ? 'input-error' : 'input-warning'}`}
                 onChange={updateNewUser('password')}
               />
               {formError.passwordErr && <p className="text-red-500">{MSG_PASSWORD_LENGTH}</p>}
@@ -216,9 +207,8 @@ const CreateAccount = () => {
                 id="email"
                 autoComplete="email"
                 placeholder="Email"
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
-                focus:ring-2 focus:ring-inset focus:ring-purple-600 focus:border-0 sm:text-sm sm:leading-6
-                ${formError.emailErr ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
+                className={`input input-bordered w-full
+                ${formError.emailErr ? 'input-error' : 'input-warning'}`}
                 onChange={updateNewUser('email')}
               />
               {formError.fieldErr && !form.email && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
@@ -232,9 +222,8 @@ const CreateAccount = () => {
                 id="phone-number"
                 autoComplete="tel"
                 placeholder="Phone number"
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 
-                focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6
-                ${formError.phoneErr ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
+                className={`input input-bordered w-full
+                ${formError.phoneErr ? 'input-error' : 'input-warning'}`}
                 onChange={updateNewUser('phone')}
               /> 
               {formError.fieldErr && !form.phone && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
@@ -243,9 +232,8 @@ const CreateAccount = () => {
           
           <div className="sm:col-span-2">
           <div className="mt-2.5">
-          <select className={`select select-amber-400 w-full  
-          focus:ring-2 focus:ring-inset focus:ring-purple-600
-          ${formError.error && formError.roleErr ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
+          <select className={`select w-full 
+          ${formError.error && formError.roleErr ? 'select-error' : 'select-warning'}`}
           value={form.role}
           onChange={updateRole}>
             <option disabled selected value=''>Choose one</option>

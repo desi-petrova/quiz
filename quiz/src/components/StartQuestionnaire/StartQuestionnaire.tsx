@@ -64,13 +64,13 @@ const StartQuestionnaire = () => {
                                      idQuiz: resultQuiz.id,}})
           
         })
-        
+
       }
     return (
         <div className="w-3/5 mx-auto m-5">
         <div className="m-3">
         <h3 className='text-2xl text-center m-1'>{questionnaire.title}</h3>
-        <p>{parse(questionnaire.description)}</p>
+        {questionnaire.description && <p>{parse(questionnaire.description)}</p>}
         <p>Time: {questionnaire.time}minutes</p>
         </div>
         <button className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 

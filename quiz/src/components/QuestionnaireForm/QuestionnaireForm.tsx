@@ -66,8 +66,8 @@ export const QuestionnaireForm = () => {
     }
 
     return (
-        <div className='isolate bg-white px-6 py-24 sm:py-32 lg:px-8 w-1/2'>
-        
+        // <div className='isolate bg-white px-6 py-24 sm:py-32 lg:px-8 w-1/2'>
+        <div className="w-1/2  bg-white" >
         <div className="m-10 max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Create Questionnaire</h2>
         </div>
@@ -76,9 +76,8 @@ export const QuestionnaireForm = () => {
             <input 
         placeholder="Write title of questionnaire..."
         value={questionnaire.title}
-        className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm placeholder:text-gray-400
-        focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6 
-        ${error ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
+        className={`input input-bordered w-full
+        ${error ? 'input-error' : 'input-warning'}`}
         onChange={updateQuestionnaires('title')}/>
         {error && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
          </div>
@@ -94,23 +93,24 @@ export const QuestionnaireForm = () => {
             }}
           />
          </div>
-         <div className="m-2.5">
-            <p>Time: </p>
+         <div className="flex m-2.5 ">
+            <p className='text-center'>Time: &nbsp;</p>
           <input 
           value={questionnaire.time}
-          className="block w-full ring-1 ring-inset ring-gray-300" 
-          placeholder="Write description here..."
+          className="w-1/5 border border-yellow-400 rounded px-2" 
           onChange={updateQuestionnaires('time')} />
-          <p></p>
+          <p>&nbsp; min</p>
          </div>
-         <select 
-         className="select select-amber-400 w-full focus:ring-2 focus:ring-inset focus:ring-purple-600 
-         ring-1 ring-inset ring-gray-300"
+         <div className='m-2.5'>
+           <select 
+         className="select w-full select-warning"
          value={questionnaire.status}
          onChange={updateQuestionnaires('status')}>
             <option value='public' >Public</option>
             <option value='private' >Private</option>
-          </select>
+          </select> 
+         </div>
+         
         
         <div className='flex justify-center'>
             <button 

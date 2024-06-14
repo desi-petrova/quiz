@@ -57,7 +57,7 @@ const MyQuestionnaire = () => {
       }
 
     return (
-    <div>
+    <div className="mt-10">
         <h2 className="text-4xl text-center font-bold text-[#6B21A8]">M y &nbsp;&nbsp;&nbsp; Q u e s t i o n n a i r e s</h2>
         <div className='flex justify-end'>
         <button

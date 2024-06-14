@@ -91,9 +91,8 @@ const Login = () => {
                 id="email"
                 autoComplete="email"
                 placeholder="Email"
-                className={`block w-full border-0 rounded-md px-3.5 py-2 text-gray-900  shadow-sm  placeholder:text-gray-400 
-                focus:ring-2 focus:ring-inset focus:ring-purple-300 sm:text-sm sm:leading-6 
-                ${errorLoginForm.error && errorLoginForm.email ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
+                className={`input input-bordered w-full 
+                ${errorLoginForm.error && errorLoginForm.email ? 'input-error' : 'input-warning'}`}
                 onChange={updateLoginForm('email')}
                 /> 
                 {errorLoginForm.error && errorLoginForm.email && <p className="text-red-500">{MSG_FIELD_REQUIRED}</p>}              
@@ -107,9 +106,8 @@ const Login = () => {
                 id="password"
                 autoComplete="password"
                 placeholder='Password'
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm  placeholder:text-gray-400 
-                focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6 
-                ${errorLoginForm.error && errorLoginForm.password ? 'ring-2 ring-inset ring-red-500' : 'ring-1 ring-inset ring-gray-300'}`}
+                className={`input input-bordered w-full
+                ${errorLoginForm.error && errorLoginForm.password ? 'input-error' : 'input-warning'}`}
                 onChange={updateLoginForm('password')}
               />
               {errorLoginForm.error && errorLoginForm.password && <p className="text-red-500">{MSG_FIELD_REQUIRED}</p>}

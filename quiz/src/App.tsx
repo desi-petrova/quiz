@@ -16,7 +16,8 @@ import QuestionnaireForm from './components/QuestionnaireForm/QuestionnaireForm'
 import StartQuestionnaire from './components/StartQuestionnaire/StartQuestionnaire';
 import StartQuestions from './components/StartQuestions/StartQuestions';
 import ReviewQuiz from './components/ReviewQuiz/ReviewQuiz';
-import SendQuiz from './components/SendQuiz/SendQuiz';
+// import SendQuiz from './components/SendQuiz/SendQuiz';
+import UserDetails from './components/UserDetails/UserDetails';
 
 function App() {
   const [userAuth, loading] = useAuthState(auth);
@@ -70,13 +71,13 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/createAccount' element={!appState.user && <CreateAccount />} />
           <Route path='/login' element={!appState.user && <Login />} />
-          {/* <Route path='/new-chat' element={<AuthenticatedRoute><NewChat /></AuthenticatedRoute>} /> */}
           <Route path='/newQuestionnaire' element={<AuthenticatedRoute><NewQuestionnaire /></AuthenticatedRoute>} /> 
           <Route path='/questionnaireForm' element={<AuthenticatedRoute><QuestionnaireForm /></AuthenticatedRoute>} />
           <Route path='/startQuestionnaire' element={<AuthenticatedRoute><StartQuestionnaire /></AuthenticatedRoute>} />
           <Route path='/startQuestions' element={<AuthenticatedRoute><StartQuestions /></AuthenticatedRoute>} />
           <Route path='/reviewQuiz' element={<AuthenticatedRoute><ReviewQuiz /></AuthenticatedRoute>} />
-          <Route path='/sendQuiz' element={<AuthenticatedRoute><SendQuiz /></AuthenticatedRoute>} />
+          {/* <Route path='/sendQuiz' element={<AuthenticatedRoute><SendQuiz /></AuthenticatedRoute>} /> */}
+          <Route path='/userDetails' element={<AuthenticatedRoute><UserDetails /></AuthenticatedRoute>} />
 
           <Route path='*' element={<NoPageFound />} />
         </Routes>
