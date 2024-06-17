@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import MyQuestionnaire from '../../components/MyQuestionnaire/MyQuestionnaire';
 import AppContext, { UserState } from '../../context/AppContext';
 import UpcomingQuizzes from '../../components/UpcomingQuizzes/UpcomingQuizzes';
+import MyCompletedQuizzes from '../../components/MyCompletedQuizzes/MyCompletedQuizzes';
 
 const Home = () => {
     const { userData } = useContext<UserState>(AppContext);
@@ -13,6 +14,7 @@ const Home = () => {
         <div className="relative z-10 w-4/5 mx-auto ">
         {userData && <MyQuestionnaire />}
         {userData && <UpcomingQuizzes />}
+        {userData && <MyCompletedQuizzes />}
         </div>
         </div>       
         </div> 

@@ -58,12 +58,8 @@ export const updateUserAnswers = (handle: string, idAnswer: string): Promise<voi
   return update(ref(db), { [`users/${handle}/myAnswers/${idAnswer}`]: true });
 };
 
-export const updateCompletedQuiz = (handle: string, idQuiz: string): Promise<void> => {
-  return update(ref(db), { [`users/${handle}/myCompletedQuiz/${idQuiz}`]: true });
-};
-
 export const updateUserCompletedQuiz = (handle: string, idQuiz: string ) => {
-  return update(ref(db), { [`users/${handle}/myQuiz/${idQuiz}`]: true})
+  return update(ref(db), { [`users/${handle}/myCompletedQuizzes/${idQuiz}`]: true})
 }
 
 export const updateUserQuizAnswers = (handle: string, answer: string ) => {
@@ -86,6 +82,17 @@ export const getUserUpcomingQuizzesLive = (handle: string, listener: UserUpcomin
     if (!snapshot.exists()) return [];
     const myQuestionnaires = Object.keys(snapshot.val());
     return listener(myQuestionnaires)
+  })
+}
+
+export interface UserCompletedQuizzesLive { (questionnaires: string[]): void }
+
+export const getUserCompletedQuizzesLive = (handle: string, listener: UserCompletedQuizzesLive) => {
+
+  return onValue(ref(db, `users/${handle}/myCompletedQuizzes`), (snapshot) => {
+    if (!snapshot.exists()) return [];
+    const myQuizzes = Object.keys(snapshot.val());
+    return listener(myQuizzes)
   })
 }
 
