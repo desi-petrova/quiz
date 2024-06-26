@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import {getQuestionnaireById} from '../../services/questionnaire.service.ts'
+import {getQuestionnaireById, getQuestionnaireTotalPointsLive} from '../../services/questionnaire.service.ts'
 import AppContext, { UserState } from '../../context/AppContext';
 import {IdQuestionnaire, Questionnaire } from '../../common/typeScriptDefinitions.ts';
 import parse from 'html-react-parser';
@@ -8,6 +8,8 @@ import parse from 'html-react-parser';
 const QuestionnaireDetails = ({idQuestionnaire}: IdQuestionnaire) => {
     const { userData } = useContext<UserState>(AppContext);
     const [questionnaire, setQuestionnaire] = useState<Questionnaire>({})
+    const [totalPoints, setTotalPoints] = useState<number>(0)
+    
 
     useEffect(() => {
         getQuestionnaireById(idQuestionnaire)
@@ -17,6 +19,11 @@ const QuestionnaireDetails = ({idQuestionnaire}: IdQuestionnaire) => {
         .catch(e => console.error(e));
 
       }, [idQuestionnaire, userData])
+
+    useEffect(() => {
+      getQuestionnaireTotalPointsLive(idQuestionnaire, (data: number) => setTotalPoints(data))
+    },[idQuestionnaire, userData])
+
      
     return (
         <div className="w-full">
@@ -26,6 +33,7 @@ const QuestionnaireDetails = ({idQuestionnaire}: IdQuestionnaire) => {
         {questionnaire.description && <p className="m-1 px-2">{parse(questionnaire.description)}</p>}
         <p className="m-1 px-2">Time: {questionnaire.time}</p>
         <p className="m-1 px-2">Status: {questionnaire.status}</p>
+        <p className="m-1 px-2">Total points: {totalPoints}</p>
         </div>       
         </div> 
     )

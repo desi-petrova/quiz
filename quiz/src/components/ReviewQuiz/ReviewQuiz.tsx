@@ -24,6 +24,7 @@ const ReviewQuiz = () => {
     return (
         <div className="w-3/5 mx-auto m-5">
             <h2 className='text-2xl text-center m-1'>{quiz.title}</h2>
+            <p className='text-right text-xl text-purple-500 font-bold'>{quiz.myTotalPoints}/{quiz.totalPoints}</p>
             <div className="pl-4">
                {quiz.answers && quiz.answers.map((answer, indexQ) => {
 

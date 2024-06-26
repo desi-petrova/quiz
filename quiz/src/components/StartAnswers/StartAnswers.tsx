@@ -4,12 +4,13 @@ import { getAnswersByQuestionId } from "../../services/answers.service";
 import AppContext, { UserState } from "../../context/AppContext";
 import { FaRegCircle, FaRegSquare  } from "react-icons/fa6";
 import { IoMdCheckmarkCircleOutline, IoMdCheckboxOutline } from "react-icons/io";
-import { getQuizAnswerByQuizIdAndQuestionId, updateMyAnswers } from "../../services/quizAnswers.service";
+import { getQuizAnswerByQuizIdAndQuestionId, updateMyAnswers, updateQuizAnswerMyPoints } from "../../services/quizAnswers.service";
 import { shuffleArray } from "../../common/functions";
+import { updateQuizMyTotalPoints } from "../../services/completedQuiz.service";
 
 
 
-const StartAnswers = ({questionId, type, idQuiz} : StartAnswer) => {
+const StartAnswers = ({questionId, type, idQuiz, questionPoints} : StartAnswer) => {
 
     const { userData } = useContext<UserState>(AppContext);
     const [answers, setAnswers] = useState<MyAnswers[]>([]);
@@ -28,7 +29,7 @@ const StartAnswers = ({questionId, type, idQuiz} : StartAnswer) => {
             getQuizAnswerByQuizIdAndQuestionId(idQuiz, questionId)
         .then(result => {
             if(result == null) return []
-            setMyAnswerId(result[0].id)
+            setMyAnswerId(result[0].id) 
         })
         })
         .catch(e => console.error(e))
@@ -37,8 +38,6 @@ const StartAnswers = ({questionId, type, idQuiz} : StartAnswer) => {
     const correctAnswer = (correctAnswer: string) => (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>  {
         e.preventDefault()
         const updatedAnswers: MyAnswers[] = [];
-        console.log(answers)
-        console.log(myAnswerId)
 
         if(type === 'oneAnswer'){
         answers.forEach((answer) => {
@@ -59,9 +58,35 @@ const StartAnswers = ({questionId, type, idQuiz} : StartAnswer) => {
                     updatedAnswers.push({...answer})
                 }
             })}
+
+        let myPoints  = 0;
+        let countTrueAnswers =0;
+        let countMyTrueAnswers =0;
+        if(type === 'oneAnswer' ){
+           updatedAnswers.forEach(answers => {
+            if(answers.wrong == false && answers.myAnswer ==true){
+                myPoints += Number(questionPoints)
+            }
+        }) } else{
+            updatedAnswers.forEach(answers => {
+                if(answers.wrong == false && answers.myAnswer ==true){
+                    countMyTrueAnswers++;
+                }
+                if(answers.wrong == false){
+                    countTrueAnswers++;
+                }
+                })
+                myPoints = (questionPoints/countTrueAnswers) * countMyTrueAnswers
+                if(myPoints % 1 != 0){
+                    myPoints = Number(myPoints.toFixed(2))
+                } 
+            }
+
+        
     
         setAnswers([...updatedAnswers])
         updateMyAnswers(myAnswerId, updatedAnswers)
+        updateQuizAnswerMyPoints(myAnswerId, myPoints)
      }
 
      const openAnswer = (e: React.ChangeEvent<HTMLInputElement> ) => {
@@ -72,9 +97,16 @@ const StartAnswers = ({questionId, type, idQuiz} : StartAnswer) => {
             myOpenAnswer: e.target.value
         };
     });
-
+    
     setAnswers(updatedAnswer)
     updateMyAnswers(myAnswerId, updatedAnswer)
+
+    updatedAnswer.forEach(answer => {
+        if(answer.myOpenAnswer.toLowerCase() === answer.answer.toLowerCase()){
+            updateQuizAnswerMyPoints(myAnswerId, questionPoints)
+
+        }})
+
     }
 
     return (

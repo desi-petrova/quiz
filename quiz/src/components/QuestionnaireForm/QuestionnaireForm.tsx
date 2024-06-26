@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {createQuestionnaire} from '../../services/questionnaire.service';
 import AppContext, { UserState } from '../../context/AppContext';
 import { useContext } from 'react';
-import {MSG_FIELD_REQUIRED} from '../../common/constant.ts';
+import {MAX_CONTEXT_LENGTH, MSG_CONTEXT_LENGTH, MSG_FIELD_REQUIRED} from '../../common/constant.ts';
 import {updateUserQuestionnaires} from '../../services/users.service.ts';
 import { useNavigate } from 'react-router-dom';
 import {Questionnaire} from '../../common/typeScriptDefinitions.ts'
@@ -23,8 +23,10 @@ export const QuestionnaireForm = () => {
         picture: '',
     });
     const navigate = useNavigate();
+    const [lengthContext, setLengthContext] = useState<number>(0)
 
     const [error, setError] = useState<boolean>(false)
+    const [errorContext, setErrorContext] = useState<boolean>(false);
 
     const updateQuestionnaires = (field: string) => (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>) =>{
         setQuestionnaire({
@@ -35,6 +37,7 @@ export const QuestionnaireForm = () => {
 
     const saveQuestionnaire = () => {
         if(!questionnaire.title) return setError(true);
+        if(lengthContext > MAX_CONTEXT_LENGTH) return setErrorContext(true);
 
         if(userData === null) return "User is not login!"
 
@@ -89,15 +92,24 @@ export const QuestionnaireForm = () => {
             onChange={(_, delta, source, editor) => {
 
               const data = editor.getHTML();
-              return setQuestionnaire({ ...questionnaire, description: data });
+              const length = editor.getText();
+              return setQuestionnaire({ ...questionnaire, description: data }),setLengthContext(length.length - 1);
             }}
           />
+          <div className="flex justify-end">
+            {lengthContext <= MAX_CONTEXT_LENGTH ? <p className='text-xs'>Symbols: {lengthContext}</p> : 
+            <p className="text-red-500 text-xs "> Symbols: {lengthContext}</p>}
+          </div>
+          <div>
+              {errorContext && <p className="text-red-500"> {MSG_CONTEXT_LENGTH}</p>}
+          </div>
          </div>
          <div className="flex m-2.5 ">
             <p className='text-center'>Time: &nbsp;</p>
           <input 
           value={questionnaire.time}
-          className="w-1/5 border border-yellow-400 rounded px-2" 
+          className="text-right w-[50px] border border-yellow-400 rounded px-2 
+          focus-visible:outline-none focus:ring-2 focus:ring-yellow-400"
           onChange={updateQuestionnaires('time')} />
           <p>&nbsp; min</p>
          </div>

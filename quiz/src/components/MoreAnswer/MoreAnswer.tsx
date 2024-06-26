@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { createQuestion, updateQuestionAnswers } from "../../services/question.service.ts";
-import {MSG_FIELD_REQUIRED} from '../../common/constant.ts';
+import {MSG_CORRECT_ANSWER, MSG_FIELD_REQUIRED, MSG_WRONG_ANSWER} from '../../common/constant.ts';
 import { createAnswers } from '../../services/answers.service.ts';
-import {updateQuestionnaireQuestion, updateQuestionnaireAnswer} from "../../services/questionnaire.service.ts"
+import {updateQuestionnaireQuestion, updateQuestionnaireAnswer, updateQuestionnaireTotalPoints} from "../../services/questionnaire.service.ts"
 import AppContext, { UserState } from '../../context/AppContext';
 import { useContext } from 'react';
 import {updateUserQuestions, updateUserAnswers} from "../../services/users.service.ts"
@@ -18,6 +18,7 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
     const [newQuestion, setNewQuestion] = useState<NewQuestion>({
         question: '',
         type: 'MoreAnswer',
+        points: 0,
     })
 
     const [answers, setAnswers] = useState<Answer[]>([
@@ -29,8 +30,11 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
         {description: '', wrong: null,},
 ])
 
-    const [error, setError] = useState<boolean>(false)
-    const [errorWrongQuestions, setErrorQuestions] = useState<boolean>(false)
+    const [errorQuestion, setErrorQuestion] = useState<boolean>(false)
+    const [errorWrongAnswer, setErrorWrongAnswer] = useState<boolean>(false)
+    const [errorCorrectAnswer,setErrorCorrectAnswer] = useState<boolean>(false)
+    const [errorPoints, setErrorPoints] = useState<boolean>(false)
+
     const { userData } = useContext<UserState>(AppContext);
 
     const updateNewQuestion = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,13 +66,15 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
 
     const saveQuestion = () => {
 
-        if(!answers.some(answer => answer.wrong ===true )) return setError(true);
-        if(!answers.some(answer => answer.wrong === false )) return setErrorQuestions(true);
+        if(newQuestion.question == "") return setErrorQuestion(true)
+
+        if(!answers.some(answer => answer.wrong ===true)) return setErrorWrongAnswer(true);
+        if(!answers.some(answer => answer.wrong === false)) return setErrorCorrectAnswer(true);
+        if(newQuestion.points == 0) return setErrorPoints(true);
+
         if(userData === null) return "User is not login!"
 
-        if(answers.some(answer => {answer.description != '' && answer.wrong == null })) return setError(true)
-
-        createQuestion(newQuestion.question, newQuestion.type, idQuestionnaire)
+        createQuestion(newQuestion.question, newQuestion.type, idQuestionnaire, newQuestion.points)
         .then(question => {
             answers.forEach(answer => {
                 if(answer.description != "" ) {
@@ -87,7 +93,25 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
             
         })
         .catch(e => console.error(e))
-    
+
+        updateQuestionnaireTotalPoints(idQuestionnaire, newQuestion.points)
+
+        setNewQuestion({
+            question: '',
+            type: 'oneAnswer',
+            points: 0,
+        })
+        setAnswers([
+            {description: '', wrong: null,},
+            {description: '', wrong: null,},
+            {description: '', wrong: null,},
+            {description: '', wrong: null,},
+            {description: '', wrong: null,},
+            {description: '', wrong: null,},
+        ])
+        setErrorQuestion(false)
+        setErrorWrongAnswer(false)
+        setErrorPoints(false)
            
     } 
 
@@ -103,6 +127,7 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
         <input 
         className="input input-bordered input-warning w-full mt-2 mb-2"
         onChange={updateNewQuestion('question')}/>
+        {errorQuestion && <p className="text-red-500">{MSG_FIELD_REQUIRED}</p>}
         <div >
             <p>Answers (Choose correct answers): </p>
             <button
@@ -131,7 +156,20 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
         </div>
              ) })
             }
+        {errorWrongAnswer && <p className="text-red-500">{MSG_WRONG_ANSWER}</p>} 
+        {errorCorrectAnswer && <p className="text-red-500">{MSG_CORRECT_ANSWER}</p>}   
         </div>
+        <div>
+        <div className='flex my-2 justify-end'>
+        <p className='text-l'>Points: &nbsp;</p>
+        <input type="text"
+        className="text-right w-[50px] border border-yellow-400 rounded px-2 
+        focus-visible:outline-none focus:ring-2 focus:ring-yellow-400"
+        value={newQuestion.points}
+        onChange={updateNewQuestion('points')}/>
+        </div>
+        {errorPoints && <p className="text-red-500 text-right">{MSG_FIELD_REQUIRED}</p>}
+        </div>        
         <div className='flex justify-end'>
             <button 
             className="block m-2 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 

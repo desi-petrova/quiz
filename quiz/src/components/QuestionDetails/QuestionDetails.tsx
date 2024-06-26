@@ -29,6 +29,7 @@ const QuestionDetails = ({idQuestionnaire}: IdQuestionnaire) => {
             return(
                 <div key={indexQ} className="m-3">
                     <p>{indexQ + 1}. {question.question}</p>
+                    <p className='text-right'>Points: {question.points}</p>
                     <Answers questionId={question.id} show={true}/>
                 </div>
             )

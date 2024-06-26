@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { createQuestion, updateQuestionAnswers } from "../../services/question.service.ts";
 import {MSG_FIELD_REQUIRED} from '../../common/constant.ts';
 import { createAnswers } from '../../services/answers.service.ts';
-import {updateQuestionnaireQuestion, updateQuestionnaireAnswer} from "../../services/questionnaire.service.ts"
+import {updateQuestionnaireQuestion, updateQuestionnaireAnswer, updateQuestionnaireTotalPoints} from "../../services/questionnaire.service.ts"
 import AppContext, { UserState } from '../../context/AppContext';
 import { useContext } from 'react';
 import {updateUserQuestions, updateUserAnswers} from "../../services/users.service.ts"
@@ -18,10 +18,13 @@ const OneAnswer = ({idQuestionnaire} : IdQuestionnaire) => {
         question: '',
         type: 'openAnswer',
         answer: '',
+        points: 0,
 
     }) 
     const [errorQuestion, setErrorQuestion] = useState<boolean>(false)
     const [errorAnswer, setErrorAnswer] = useState<boolean>(false)
+    const [errorPoints, setErrorPoints] = useState<boolean>(false)
+
     const { userData } = useContext<UserState>(AppContext);
 
     const updateNewQuestion = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,8 +40,10 @@ const OneAnswer = ({idQuestionnaire} : IdQuestionnaire) => {
 
         if(!newQuestion.question) return setErrorQuestion(true)
         if(!newQuestion.answer) return setErrorAnswer(true)
+        if(newQuestion.points == 0) return setErrorPoints(true);
 
-        createQuestion(newQuestion.question, newQuestion.type, idQuestionnaire)
+
+        createQuestion(newQuestion.question, newQuestion.type, idQuestionnaire, newQuestion.points)
         .then(question => {
             createAnswers(question.id, newQuestion.answer, false)
             .then(answer => {
@@ -49,12 +54,18 @@ const OneAnswer = ({idQuestionnaire} : IdQuestionnaire) => {
                 updateQuestionnaireAnswer(idQuestionnaire, answer.id)
                 updateUserQuestions(userData.handle, question.id)
                 updateUserAnswers(userData.handle, answer.id)
+                updateQuestionnaireTotalPoints(idQuestionnaire, newQuestion.points)
 
                 setNewQuestion({
                     question: '',
                     type: 'openAnswer',
                     answer: '',
+                    points: 0,
                 })
+                setErrorQuestion(false)
+                setErrorAnswer(false)
+                setErrorPoints(false)
+
             })
 
         })
@@ -86,6 +97,17 @@ const OneAnswer = ({idQuestionnaire} : IdQuestionnaire) => {
             value={newQuestion.answer}
             onChange={updateNewQuestion('answer')}/>
             {errorAnswer && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
+        </div>
+        <div>
+        <div className='flex my-2 justify-end'>
+        <p className='text-l'>Points: &nbsp;</p>
+        <input type="text"
+        className="text-right w-[50px] border border-yellow-400 rounded px-2 
+        focus-visible:outline-none focus:ring-2 focus:ring-yellow-400"
+        value={newQuestion.points}
+        onChange={updateNewQuestion('points')}/>
+        </div>
+        {errorPoints && <p className="text-red-500 text-right">{MSG_FIELD_REQUIRED}</p>}
         </div>
         <div className='flex justify-end'>
             <button 

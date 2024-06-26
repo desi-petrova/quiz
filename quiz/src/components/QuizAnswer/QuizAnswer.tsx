@@ -23,10 +23,11 @@ const QuizAnswer = ({answerId, num}: QuizAnswer) => {
 
     return (
         <div className='pl-4'>
-            <p className="m-3">{num + 1}. {quizAnswer.question}</p>
-            {quizAnswer.answers && quizAnswer.answers.map(myAnswer => {
+            <p className="m-1">{num + 1}. {quizAnswer.question}</p>
+            <p className='text-right text-green-500 font-bold'>{quizAnswer.myPoints}/{quizAnswer.points}</p>
+            {quizAnswer.answers && quizAnswer.answers.map((myAnswer, index) => {
                 return (
-                    <div className="m-5">
+                    <div key={index} className="m-5">
                         {quizAnswer.typeQuestion == 'oneAnswer' ? (
                             <div className='flex'>
                                 <div className='m-1 pt-0.5'>{myAnswer.myAnswer == true && myAnswer.wrong == false ? 

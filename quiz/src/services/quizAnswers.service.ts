@@ -1,8 +1,8 @@
 import { get, set, ref, query, equalTo, orderByChild, update, DataSnapshot, onValue, remove,push } from 'firebase/database';
 import { db } from '../config/firebaseConfig.ts';
-import { MyAnswers } from '../common/typeScriptDefinitions.ts';
+import { MyAnswers, QuizMyAnswer } from '../common/typeScriptDefinitions.ts';
 
-export const createMyAnswers= (questionId: string, idQuiz: string, question: string, typeQuestion: string, answers: MyAnswers[] ) => {
+export const createMyAnswers= (questionId: string, idQuiz: string, question: string, typeQuestion: string, answers: MyAnswers[], points: number ) => {
 
     return push(
         ref(db, 'quizAnswers'),
@@ -11,6 +11,8 @@ export const createMyAnswers= (questionId: string, idQuiz: string, question: str
         question,
         typeQuestion,
         answers,
+        points,
+        myPoints: 0,
         },
     )
     .then(result => {
@@ -45,10 +47,8 @@ export const getQuizAnswerByQuizIdAndQuestionId =(idQuiz: string, questionId: st
          .then(snapshot => {
           if(!snapshot.exists) return null;
 
-          console.log(snapshot)
         const answer = snapshot.val();
         if(answer == null) return null
-          console.log(questionId)
         return Object.keys(answer).map(key => {
           const result = answer[key];
   
@@ -60,4 +60,23 @@ export const getQuizAnswerByQuizIdAndQuestionId =(idQuiz: string, questionId: st
       }).filter(answer => answer.questionId === questionId) ;
 
          })
+}
+
+export const getQuizAnswerMyTotalPoints=(idQuiz: string) => {
+
+  return get(query(ref(db,'quizAnswers'), orderByChild('idQuiz',), equalTo(idQuiz)))
+         .then(snapshot => {
+          if(!snapshot.exists) return null;
+
+        const answers = snapshot.val();
+        if(answers == null) return null
+       
+        return Object.values(answers).reduce((myTotalPoints: number, el) => myTotalPoints += Number(el.myPoints), 0)
+         })
+
+  
+}
+
+export const updateQuizAnswerMyPoints = (idMyAnswers: string, myPoints: number) => {
+  return update(ref(db), { [`quizAnswers/${idMyAnswers}/myPoints/`]: myPoints })
 }

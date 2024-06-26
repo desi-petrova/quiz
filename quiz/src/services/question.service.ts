@@ -1,7 +1,7 @@
 import { get, set, ref, query, equalTo, orderByChild, update, DataSnapshot, onValue, remove,push } from 'firebase/database';
 import { db } from '../config/firebaseConfig.ts';
 
-export const createQuestion = (question: string, type: string, idQuestionnaire: string ) => {
+export const createQuestion = (question: string, type: string, idQuestionnaire: string, points: number ) => {
 
     return push(
         ref(db, 'questions'),
@@ -9,6 +9,7 @@ export const createQuestion = (question: string, type: string, idQuestionnaire: 
         type,
         createOn: Date.now(),
         idQuestionnaire,
+        points,
         },
     )
     .then(result => {
@@ -74,3 +75,4 @@ export const getQuestionsByQuestionnaireId =(idQuestionnaire: string) => {
 
          })
 }
+

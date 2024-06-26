@@ -11,13 +11,13 @@ import { createMyAnswers } from '../../services/quizAnswers.service.ts';
 import parse from 'html-react-parser';
 
 
-export interface Questions{
-    id: string,
-    question: string, 
-    type: string, 
-    idQuestionnaire: string,
-    answers: string[] 
-}
+// export interface Questions{
+//     id: string,
+//     question: string, 
+//     type: string, 
+//     idQuestionnaire: string,
+//     answers: string[] 
+// }
 
 const StartQuestionnaire = () => {
 
@@ -40,7 +40,8 @@ const StartQuestionnaire = () => {
       const startQuiz = () => {
         if(userData ==null) return;
 
-        createCompletedQuiz(questionnaire.id, questionnaire.title, userData.handle, questionnaire.background)
+        createCompletedQuiz(questionnaire.id, questionnaire.title, userData.handle, 
+                            questionnaire.background,questionnaire.totalPoints)
         .then(resultQuiz => {
 
           updateUserCompletedQuiz(userData.handle, resultQuiz.id)
@@ -51,7 +52,7 @@ const StartQuestionnaire = () => {
              Promise.all(res.answers.map((answer: string) => {
                 return getAnswerById(answer)
               }))
-              .then(el => createMyAnswers(res.id, resultQuiz.id, res.question, res.type, [...el]))
+              .then(el => createMyAnswers(res.id, resultQuiz.id, res.question, res.type, [...el], res.points))
               .then(idMyAnswer => {
                 updateQuizAnswers(resultQuiz.id, idMyAnswer.id)})
               
@@ -70,7 +71,7 @@ const StartQuestionnaire = () => {
         <div className="w-3/5 mx-auto m-5">
         <div className="m-3">
         <h3 className='text-2xl text-center m-1'>{questionnaire.title}</h3>
-        {questionnaire.description && <p>{parse(questionnaire.description)}</p>}
+        {questionnaire.description && parse(questionnaire.description)}
         <p>Time: {questionnaire.time}minutes</p>
         </div>
         <button className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 

@@ -13,6 +13,7 @@ export const createQuestionnaire = (title: string, description: string, handle: 
          status,
          background,
          picture,
+         totalPoints: 0,
         },
     )
     .then(result => {
@@ -65,3 +66,27 @@ export const getQuestionnaireById = (id: string) => {
   export const updateQuestionnaireAnswer = (idQuestionnaire: string, idAnswer: string): Promise<void> => {
     return update(ref(db), { [`questionnaires/${idQuestionnaire}/answers/${idAnswer}`]: true });
   };
+
+  export const updateQuestionnaireTotalPoints = (idQuestionnaire: string, points: number): Promise<void> => {
+    return get(ref(db, `questionnaires/${idQuestionnaire}/`))
+                        .then(res => {
+                          if (!res.exists()) {
+                            throw new Error(`Questionnaire with id ${idQuestionnaire} does not exist!`);
+                          }
+                          const questionnaire = res.val();
+                          const result = Number(questionnaire.totalPoints) + Number(points)
+                          return result
+                        } ) 
+                        .then(totalPoints => update(ref(db), { [`questionnaires/${idQuestionnaire}/totalPoints/`]: totalPoints  }))    
+  };
+
+  export interface TotalPoints { (points: number): void }
+
+  export const getQuestionnaireTotalPointsLive = (id: string, listener: TotalPoints) => {
+
+    return onValue(ref(db, `questionnaires/${id}/totalPoints`), (snapshot) => {
+      if (!snapshot.exists()) return [];
+      const points = snapshot.val();
+      return listener(points)
+    })
+  }

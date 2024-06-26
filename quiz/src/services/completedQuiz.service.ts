@@ -1,7 +1,7 @@
 import { get, set, ref, query, equalTo, orderByChild, update, DataSnapshot, onValue, remove,push } from 'firebase/database';
 import { db } from '../config/firebaseConfig.ts';
 
-export const createCompletedQuiz = (idQuestionnaire: string, title: string, handle: string, background: string) => {
+export const createCompletedQuiz = (idQuestionnaire: string, title: string, handle: string, background: string, totalPoints: number) => {
 
     return push(
         ref(db, 'completedQuiz'),
@@ -10,6 +10,8 @@ export const createCompletedQuiz = (idQuestionnaire: string, title: string, hand
          user: handle,
          createOn: Date.now(),
          background,
+         totalPoints,
+         myTotalPoints: 0,
         },
     )
     .then(result => {
@@ -41,4 +43,8 @@ export const getCompletedQuizId = (id: string) => {
 
 export const updateQuizAnswers = (idQuiz: string, idQuizAnswers: string ) => {
     return update(ref(db), { [`completedQuiz/${idQuiz}/answers/${idQuizAnswers}`]: true})
+}
+
+export const updateQuizAnswersMyTotalPoints = (idQuiz: string, myTotalPoints: number ) => {
+  return update(ref(db), { [`completedQuiz/${idQuiz}/myTotalPoints/`]: myTotalPoints})
 }

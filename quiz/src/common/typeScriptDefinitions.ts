@@ -65,18 +65,21 @@ export interface Questionnaire {
     picture: string,
     questions?: [id: string],
     answers?: [id: string],
+    totalPoints: number,
 }
 
 //Questions
 export interface NewQuestion{
     question: string,
     type: string,
+    points: number,
 }
 
 export interface NewQuestions{
     question: string,
     type: string,
     answer: string,
+    points: number,
 }
 
 export interface Questions{
@@ -84,6 +87,7 @@ export interface Questions{
     question: string, 
     type: string, 
     idQuestionnaire: string,
+    points: number,
     answers: string[] 
 }
 
@@ -92,6 +96,7 @@ export interface StartAnswer {
     type: string,
     question: string,
     idQuiz: string,
+    questionPoints: number,
 }
 
 //Answers
@@ -130,6 +135,8 @@ export interface Quiz{
     user: string,
     background: string,
     answers: string[],
+    totalPoints: number,
+    myTotalPoints: number,
 }
 
 export interface QuizMyAnswer{
@@ -138,6 +145,8 @@ export interface QuizMyAnswer{
     questionId: string,
     question: string,
     typeQuestion: string,
+    points: number,
+    myPoints: number,
     answers: [{answer: string, myAnswer: boolean, wrong: boolean, myOpenAnswer: string, }],
 }
 
