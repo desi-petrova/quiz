@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import {NAMES_MIN_LENGTH, NAMES_MAX_LENGTH, USERNAME_MIN_LENGTH,
   EMAIL_REGEX, PHONE_REGEX, PASSWORD_MIN_LENGTH, MSG_FIELD_REQUIRED, 
-  MSG_USERNAME_TAKEN, MSG_EMAIL_TAKEN, MSG_NAMES_LENGTH, MSG_PASSWORD_LENGTH,MSG_USERNAMES_LENGTH
+  MSG_USERNAME_TAKEN, MSG_EMAIL_TAKEN, MSG_NAMES_LENGTH, MSG_PASSWORD_LENGTH,MSG_USERNAMES_LENGTH,
+  MSG_PHONE_INVALID,
+  MSG_EMAIL_INVALID
 } from '../../common/constant.ts';
 import {createUserHandle, getUserByHandle} from '../../services/users.service.ts'
 import { registerUser } from '../../services/auth.service';
@@ -79,6 +81,9 @@ const CreateAccount = () => {
     }
     if(!form.email.match(EMAIL_REGEX)){
       errors = ({...errors, emailErr:true, error: true})
+    }
+    if(!form.phone.match(PHONE_REGEX)){
+      errors = ({...errors, phoneErr:true, error: true})
     }
     if(!form.role){
       errors = ({...errors, roleErr:true, error: true})
@@ -212,6 +217,7 @@ const CreateAccount = () => {
                 onChange={updateNewUser('email')}
               />
               {formError.fieldErr && !form.email && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
+              {formError.emailErr && <p className="text-red-500"> {MSG_EMAIL_INVALID}</p>}
             </div>
           </div>
           <div className="sm:col-span-2">  
@@ -227,6 +233,7 @@ const CreateAccount = () => {
                 onChange={updateNewUser('phone')}
               /> 
               {formError.fieldErr && !form.phone && <p className="text-red-500"> {MSG_FIELD_REQUIRED}</p>}
+              {formError.phoneErr && <p className="text-red-500"> {MSG_PHONE_INVALID}</p>}
             </div> 
           </div>
           
