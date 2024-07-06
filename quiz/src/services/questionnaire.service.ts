@@ -49,6 +49,13 @@ export const getQuestionnaireById = (id: string) => {
         } else {
           questionnaire.completedQuiz = []
         }
+
+        if(questionnaire.upcomingQuizzes){
+          questionnaire.upcomingQuizzes = Object.keys(questionnaire.upcomingQuizzes)
+        } else {
+          questionnaire.upcomingQuizzes = []
+        }
+
         return questionnaire;
       })
       .catch(e => console.error(e))
@@ -119,4 +126,16 @@ export const getQuestionnaireById = (id: string) => {
     })
     .catch(e => console.error(e))
 
+  }
+
+  export const removeQuestionnaire = (questionnaireId: string) => {
+    remove(ref(db, `questionnaires/${questionnaireId}`));
+  }
+
+  export const updateQuestionnaireUpcomingQuizzes = (idQuestionnaire: string, handle: string): Promise<void> => {
+    return update(ref(db), { [`questionnaires/${idQuestionnaire}/upcomingQuizzes/${handle}`]: true });
+  };
+
+  export const removeQuestionnaireUpcomingQuizzes = (questionnaireId: string, handle: string) => {
+    remove(ref(db, `questionnaires/${questionnaireId}/upcomingQuizzes/${handle}`));
   }

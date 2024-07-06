@@ -66,6 +66,7 @@ export interface Questionnaire {
     questions?: [id: string],
     answers?: [id: string],
     totalPoints: number,
+    upcomingQuizzes: [handle: string],
 }
 
 //Questions
@@ -154,7 +155,6 @@ export interface QuizMyAnswer{
 
 export interface VisibleIcon {
     edit: boolean,
-    delete: boolean,
     score: boolean,
     questionnaireId: string,
 }

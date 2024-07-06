@@ -5,6 +5,7 @@ import UsersList from "../UsersList/UsersList";
 import { IdQuestionnaire } from "../../common/typeScriptDefinitions";
 import { RiMailSendFill, RiMailSendLine } from "react-icons/ri";
 import { updateUserUpcomingQuizzes } from "../../services/users.service";
+import { updateQuestionnaireUpcomingQuizzes } from "../../services/questionnaire.service";
 
 
 const SendQuiz = ({idQuestionnaire}: IdQuestionnaire) => {
@@ -28,7 +29,10 @@ const SendQuiz = ({idQuestionnaire}: IdQuestionnaire) => {
         if(Object.keys(newUsers).length > 0){
         Object.keys(newUsers).forEach(user => {
             updateUserUpcomingQuizzes(user, idQuestionnaire)
+            updateQuestionnaireUpcomingQuizzes(idQuestionnaire, user)            
             .catch(e => console.log(e))
+
+            setNewUsers({})
         })
         }
     }
@@ -37,7 +41,6 @@ const SendQuiz = ({idQuestionnaire}: IdQuestionnaire) => {
     const modal = document.getElementById('my_modal_2') as HTMLDialogElement;
     modal?.showModal();
     }
-console.log(newUsers)
 
     return(
         <div>
@@ -57,7 +60,7 @@ console.log(newUsers)
                  <form method="dialog">
                  <button className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
                          shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-                         focus-visible:outline-purple-600 "
+                         focus-visible:outline-purple-600"
                         onClick={send}
                         >Send</button>
                  </form>

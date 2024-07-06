@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import {getQuestionnaireById, updateQuestionnaireCompletedQuizzes} from '../../services/questionnaire.service.ts'
+import {getQuestionnaireById, removeQuestionnaireUpcomingQuizzes, updateQuestionnaireCompletedQuizzes} from '../../services/questionnaire.service.ts'
 import AppContext, { UserState } from '../../context/AppContext';
 import { createCompletedQuiz, updateQuizAnswers } from '../../services/completedQuiz.service.ts';
 import { Questionnaire } from '../../common/typeScriptDefinitions.ts';
-import { updateUserCompletedQuiz } from '../../services/users.service.ts';
+import { removeUserUpcomingQuizzes, updateUserCompletedQuiz } from '../../services/users.service.ts';
 import { getQuestionById } from '../../services/question.service.ts';
 import { getAnswerById } from '../../services/answers.service.ts';
 import { createMyAnswers } from '../../services/quizAnswers.service.ts';
@@ -60,6 +60,8 @@ const StartQuestionnaire = () => {
             })
             .catch(e => console.error(e))
           })
+          removeUserUpcomingQuizzes(questionnaire.id,userData.handle)
+          removeQuestionnaireUpcomingQuizzes(questionnaire.id,userData.handle)
           navigate('/startQuestions', {state: {idQuestionnaire: idQuestionnaire, 
                                      title: questionnaire.title, 
                                      time:questionnaire.time,

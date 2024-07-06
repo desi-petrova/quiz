@@ -3,12 +3,12 @@ import {getUserQuestionnaireLive} from '../../services/users.service.ts'
 import AppContext, { UserState } from '../../context/AppContext';
 import { getQuestionnaireById } from '../../services/questionnaire.service.ts';
 import { useNavigate } from 'react-router-dom';
-import { MdDelete, MdTimer, MdTimerOff } from "react-icons/md";
+import { MdTimer, MdTimerOff } from "react-icons/md";
 import { Questionnaire, VisibleIcon } from '../../common/typeScriptDefinitions.ts';
 import { RiEdit2Fill, RiEdit2Line } from "react-icons/ri";
-import { MdDeleteOutline } from "react-icons/md";
 import SendQuiz from '../SendQuiz/SendQuiz.tsx';
 import { HiClipboardDocumentCheck, HiOutlineClipboardDocumentCheck } from 'react-icons/hi2';
+import RemoveQuestionnaire from '../RemoveQuestionnaire/RemoveQuestionnaire.tsx';
 
 
 const MyQuestionnaire = () => {
@@ -18,7 +18,6 @@ const MyQuestionnaire = () => {
     const navigate = useNavigate();
     const [visibleIcon, setVisibleIcon] = useState<VisibleIcon>({
         edit: false,
-        delete: false,
         score: false,
         questionnaireId: '',
     })
@@ -37,7 +36,7 @@ const MyQuestionnaire = () => {
             .catch(e => console.error(e));
         })
     )
-      }, [userData])
+      }, [])
 
       const edit = (id: string) => navigate('/newQuestionnaire', {state: {id}})
       const start= (idQuestionnaire: string) => navigate('/startQuestionnaire', {state: {idQuestionnaire}})
@@ -100,15 +99,16 @@ const MyQuestionnaire = () => {
                         onMouseEnter={() => onSeeColor('edit', questionnaire.id)}
                         onMouseLeave={() => onHideColor('edit')}
                         onClick={() => edit(questionnaire.id)}
-                        alr='edit'>
+                        >
                         {(visibleIcon.edit && visibleIcon.questionnaireId ==questionnaire.id) ?  <RiEdit2Fill size={25} /> : <RiEdit2Line size={25}/>} 
-                        </button>
-                      <button className="card-button"
+                         </button>
+                      {/* <button className="card-button"
                       onMouseEnter={() => onSeeColor('delete', questionnaire.id)}
                       onMouseLeave={() => onHideColor('delete')}
                       onClick={() => edit(questionnaire.id)}
                       >{(visibleIcon.delete && visibleIcon.questionnaireId ==questionnaire.id) ?  <MdDelete size={25}/> : <MdDeleteOutline size={25}/>}
-                      </button>
+                      </button>  */}
+                        <RemoveQuestionnaire idQuestionnaire={questionnaire.id} />
                       </div>
                       </div>
                     </div>                   
@@ -121,3 +121,5 @@ const MyQuestionnaire = () => {
 }
 
 export default MyQuestionnaire;
+
+// В картите на въпросника е добавен нов бутон с който извеждат всички резултати към избрания куйз. Добавено е ново меню Моите резултати - всеки потребител може да се прегледа резултатите си от всички куизове, които е направилВ картите на въпросника е добавен нов бутон с който извеждат всички резултати към избрания куйз. Добавено е ново меню Моите резултати - всеки потребител може да се прегледа резултатите си от всички куизове, които е направил

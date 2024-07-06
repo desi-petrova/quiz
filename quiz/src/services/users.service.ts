@@ -116,6 +116,22 @@ export const getUserCompletedQuizzesId = (handle: string) => {
 
 }
 
+export const removeUserQuestionnaire = (questionnaireId: string, handle: string) => {
+  remove(ref(db, `users/${handle}/myQuestionnaires/${questionnaireId}`));
+}
+
+export const removeUserUpcomingQuizzes = (questionnaireId: string, handle: string) => {
+  remove(ref(db, `users/${handle}/upcomingQuizzes/${questionnaireId}`));
+}
+
+export const removeUserMyQuestions = (questionId: string, handle: string) => {
+  remove(ref(db, `users/${handle}/myQuestions/${questionId}`));
+}
+
+export const removeUserMyAnswers = (answerId: string, handle: string) => {
+  remove(ref(db, `users/${handle}/myAnswers/${answerId}`));
+}
+
 
 
 // export const setAllUsersUnseen = (members: string[], handle: string, key: string): void => {
@@ -130,7 +146,7 @@ export const getUserCompletedQuizzesId = (handle: string) => {
 //   return get(ref(db, 'users'))
 //     .then((snapshot) => {
 //       if (!snapshot.exists()) {
-//         return [];
+//         return [
 //       }
 //       return Object.keys(snapshot.val())
 //     });

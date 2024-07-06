@@ -53,3 +53,8 @@ export const getAnswerById = (id: string) => {
   
            })
   }
+
+export const removeAnswer= (answerId: string) => {
+   remove(ref(db, `answers/${answerId}`))
+        .catch(e => console.log(e))
+}
