@@ -100,6 +100,10 @@ export interface StartAnswer {
     questionPoints: number,
 }
 
+export interface IdQuestion {
+    idQuestion: string,
+}
+
 //Answers
 export  interface AnswersProp {
     questionId: string,
@@ -162,4 +166,15 @@ export interface VisibleIcon {
 //UsersList
 export interface UsersListProps {
     handle: string
+}
+
+//removeProps
+export interface RemoveQuestionProps {
+    idQuestion: string,
+    onRemove: (value: string) => void;
+}
+
+export interface RemoveQuestionnaireProps {
+    idQuestionnaire: string,
+    onRemove: (value: string) => void;
 }

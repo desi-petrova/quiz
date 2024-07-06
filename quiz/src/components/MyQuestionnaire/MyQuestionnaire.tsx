@@ -9,6 +9,7 @@ import { RiEdit2Fill, RiEdit2Line } from "react-icons/ri";
 import SendQuiz from '../SendQuiz/SendQuiz.tsx';
 import { HiClipboardDocumentCheck, HiOutlineClipboardDocumentCheck } from 'react-icons/hi2';
 import RemoveQuestionnaire from '../RemoveQuestionnaire/RemoveQuestionnaire.tsx';
+import { removeQuestion } from '../../services/question.service.ts';
 
 
 const MyQuestionnaire = () => {
@@ -58,6 +59,10 @@ const MyQuestionnaire = () => {
         })
       }
 
+      const removeQuestionnaireId = (removedQuestionnaireId: string) => {
+        setQuestionnaires(prevQuestions => prevQuestions.filter(questionnaire => questionnaire.id !== removedQuestionnaireId));
+      }
+
     return (
     <div className="mt-10">
         <h2 className="text-4xl text-center font-bold text-[#6B21A8]">M y &nbsp;&nbsp;&nbsp; Q u e s t i o n n a i r e s</h2>
@@ -102,13 +107,7 @@ const MyQuestionnaire = () => {
                         >
                         {(visibleIcon.edit && visibleIcon.questionnaireId ==questionnaire.id) ?  <RiEdit2Fill size={25} /> : <RiEdit2Line size={25}/>} 
                          </button>
-                      {/* <button className="card-button"
-                      onMouseEnter={() => onSeeColor('delete', questionnaire.id)}
-                      onMouseLeave={() => onHideColor('delete')}
-                      onClick={() => edit(questionnaire.id)}
-                      >{(visibleIcon.delete && visibleIcon.questionnaireId ==questionnaire.id) ?  <MdDelete size={25}/> : <MdDeleteOutline size={25}/>}
-                      </button>  */}
-                        <RemoveQuestionnaire idQuestionnaire={questionnaire.id} />
+                        <RemoveQuestionnaire idQuestionnaire={questionnaire.id} onRemove={removeQuestionnaireId}/>
                       </div>
                       </div>
                     </div>                   

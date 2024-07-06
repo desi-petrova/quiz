@@ -139,3 +139,11 @@ export const getQuestionnaireById = (id: string) => {
   export const removeQuestionnaireUpcomingQuizzes = (questionnaireId: string, handle: string) => {
     remove(ref(db, `questionnaires/${questionnaireId}/upcomingQuizzes/${handle}`));
   }
+
+  export const removeQuestionnaireQuestion = (questionnaireId: string, questionId: string) => {
+    remove(ref(db, `questionnaires/${questionnaireId}/questions/${questionId}`));
+  }
+
+  export const removeQuestionnaireAnswer = (questionnaireId: string, answer: string) => {
+    remove(ref(db, `questionnaires/${questionnaireId}/answers/${answer}`));
+  }

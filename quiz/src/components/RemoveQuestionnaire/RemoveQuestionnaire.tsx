@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import { IdQuestionnaire, Questionnaire } from "../../common/typeScriptDefinitions";
+import { Questionnaire, RemoveQuestionnaireProps } from "../../common/typeScriptDefinitions";
 import { MdDelete, MdDeleteOutline } from "react-icons/md";
 import { getQuestionnaireById, removeQuestionnaire } from "../../services/questionnaire.service";
 import { removeAnswer } from "../../services/answers.service";
 import { removeQuestion } from "../../services/question.service";
 import { removeUserMyAnswers, removeUserMyQuestions, removeUserQuestionnaire, removeUserUpcomingQuizzes } from "../../services/users.service";
 import AppContext, { UserState } from "../../context/AppContext";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
-const RemoveQuestionnaire = ({idQuestionnaire}: IdQuestionnaire) => {
+const RemoveQuestionnaire = ({idQuestionnaire, onRemove}: RemoveQuestionnaireProps) => {
    
     const { userData } = useContext<UserState>(AppContext);
     const [visibleIconRemove, setVisibleIconRemove] = useState<boolean>(false)
@@ -29,7 +29,7 @@ const RemoveQuestionnaire = ({idQuestionnaire}: IdQuestionnaire) => {
     const remove = () => {
 
         if(userData  == null) return
-        
+
         questionnaire.answers?.forEach(answerId =>{
             removeAnswer(answerId)
             removeUserMyAnswers(answerId, userData.handle) } )
@@ -42,7 +42,7 @@ const RemoveQuestionnaire = ({idQuestionnaire}: IdQuestionnaire) => {
          console.log(1)
         }
         removeUserQuestionnaire(questionnaire.id, userData.handle)
-        navigate('/') 
+        onRemove(questionnaire.id)
 }
 
     return (
@@ -60,7 +60,8 @@ const RemoveQuestionnaire = ({idQuestionnaire}: IdQuestionnaire) => {
                 The questionnaire will also be deleted from the upcoming quizzes.
                 Solved quizzes will remain in My scores</p>
                 <div className="modal-action">
-                <form method="dialog">
+                <form method="dialog flex">
+
                 <button className="block m-3 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
                 shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
                 focus-visible:outline-purple-600"
