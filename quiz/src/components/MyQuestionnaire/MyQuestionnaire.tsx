@@ -8,6 +8,7 @@ import { Questionnaire, VisibleIcon } from '../../common/typeScriptDefinitions.t
 import { RiEdit2Fill, RiEdit2Line } from "react-icons/ri";
 import { MdDeleteOutline } from "react-icons/md";
 import SendQuiz from '../SendQuiz/SendQuiz.tsx';
+import { HiClipboardDocumentCheck, HiOutlineClipboardDocumentCheck } from 'react-icons/hi2';
 
 
 const MyQuestionnaire = () => {
@@ -18,6 +19,7 @@ const MyQuestionnaire = () => {
     const [visibleIcon, setVisibleIcon] = useState<VisibleIcon>({
         edit: false,
         delete: false,
+        score: false,
         questionnaireId: '',
     })
 
@@ -39,6 +41,7 @@ const MyQuestionnaire = () => {
 
       const edit = (id: string) => navigate('/newQuestionnaire', {state: {id}})
       const start= (idQuestionnaire: string) => navigate('/startQuestionnaire', {state: {idQuestionnaire}})
+      const score = (idQuestionnaire: string) => navigate('/QuizScores', {state:{idQuestionnaire}})
 
       const onSeeColor = (field: string, id: string) => {
         setVisibleIcon({
@@ -78,7 +81,7 @@ const MyQuestionnaire = () => {
                     <span className='m-1'><MdTimer size={20} color={'#891177'} /></span> 
                     <p>{questionnaire.time} min</p>
                     </div>)
-                     : <MdTimerOff size={20} color={'#891177'}/>}
+                     : <MdTimerOff size={20} color={'#891177'} />}
                     <button className="card-button hover:bg-purple-500  
                     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
                     focus-visible:outline-purple-500"
@@ -86,10 +89,18 @@ const MyQuestionnaire = () => {
                     >Start</button>
                       <div className="card-actions justify-end m-2">
                       <SendQuiz idQuestionnaire={questionnaire.id} />
+                      <button className="card-button"
+                      onMouseEnter={() => onSeeColor('score', questionnaire.id)}
+                      onMouseLeave={() => onHideColor('score')}
+                      onClick={() => score(questionnaire.id)}
+                     >
+                      {(visibleIcon.score && visibleIcon.questionnaireId ==questionnaire.id) ?  <HiClipboardDocumentCheck size={25} /> : <HiOutlineClipboardDocumentCheck size={25}/>} 
+                      </button>
                       <button className="card-button" 
                         onMouseEnter={() => onSeeColor('edit', questionnaire.id)}
                         onMouseLeave={() => onHideColor('edit')}
-                        onClick={() => edit(questionnaire.id)}>
+                        onClick={() => edit(questionnaire.id)}
+                        alr='edit'>
                         {(visibleIcon.edit && visibleIcon.questionnaireId ==questionnaire.id) ?  <RiEdit2Fill size={25} /> : <RiEdit2Line size={25}/>} 
                         </button>
                       <button className="card-button"

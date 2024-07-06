@@ -96,6 +96,26 @@ export const getUserCompletedQuizzesLive = (handle: string, listener: UserComple
   })
 }
 
+export const getUserCompletedQuizzesId = (handle: string) => {
+
+  return get(ref(db, `users/${handle}`))
+  .then(result => {
+    if (!result.exists()) {
+      throw new Error(`User with User ${handle} does not exist!`);
+    }
+    const user = result.val();
+    if(user.myCompletedQuizzes){
+      user.myCompletedQuizzes = Object.keys(user.myCompletedQuizzes)
+    } else {
+      user.myCompletedQuizzes = []
+    }
+          
+    return  user.myCompletedQuizzes
+  })
+  .catch(e => console.error(e))
+
+}
+
 
 
 // export const setAllUsersUnseen = (members: string[], handle: string, key: string): void => {

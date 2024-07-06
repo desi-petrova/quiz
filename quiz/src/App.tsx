@@ -18,6 +18,8 @@ import StartQuestions from './components/StartQuestions/StartQuestions';
 import ReviewQuiz from './components/ReviewQuiz/ReviewQuiz';
 // import SendQuiz from './components/SendQuiz/SendQuiz';
 import UserDetails from './components/UserDetails/UserDetails';
+import QuizScores from './components/QuizScores/QuizScores';
+import MyScores from './components/MyScores/MyScores';
 
 function App() {
   const [userAuth, loading] = useAuthState(auth);
@@ -78,6 +80,8 @@ function App() {
           <Route path='/reviewQuiz' element={<AuthenticatedRoute><ReviewQuiz /></AuthenticatedRoute>} />
           {/* <Route path='/sendQuiz' element={<AuthenticatedRoute><SendQuiz /></AuthenticatedRoute>} /> */}
           <Route path='/userDetails' element={<AuthenticatedRoute><UserDetails /></AuthenticatedRoute>} />
+          <Route path='/quizScores' element={<AuthenticatedRoute><QuizScores /></AuthenticatedRoute>} />
+          <Route path='/myScores' element={<AuthenticatedRoute><MyScores /></AuthenticatedRoute>} />
 
           <Route path='*' element={<NoPageFound />} />
         </Routes>

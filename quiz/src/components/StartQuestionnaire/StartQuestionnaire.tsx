@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import {getQuestionnaireById} from '../../services/questionnaire.service.ts'
+import {getQuestionnaireById, updateQuestionnaireCompletedQuizzes} from '../../services/questionnaire.service.ts'
 import AppContext, { UserState } from '../../context/AppContext';
 import { createCompletedQuiz, updateQuizAnswers } from '../../services/completedQuiz.service.ts';
 import { Questionnaire } from '../../common/typeScriptDefinitions.ts';
@@ -45,6 +45,7 @@ const StartQuestionnaire = () => {
         .then(resultQuiz => {
 
           updateUserCompletedQuiz(userData.handle, resultQuiz.id)
+          updateQuestionnaireCompletedQuizzes(idQuestionnaire,resultQuiz.id)
           if(!questionnaire.questions ) return
           questionnaire.questions.forEach(question => {
             getQuestionById(question)

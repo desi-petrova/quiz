@@ -1,17 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
-import {getUserCompletedQuizzesLive, getUserUpcomingQuizzesLive} from '../../services/users.service.ts'
+import {getUserCompletedQuizzesLive} from '../../services/users.service.ts'
 import AppContext, { UserState } from '../../context/AppContext';
-import { getQuestionnaireById } from '../../services/questionnaire.service.ts';
 import { useNavigate } from 'react-router-dom';
-import { Questionnaire } from '../../common/typeScriptDefinitions.ts';
-import { FcOvertime } from 'react-icons/fc';
-import { MdTimer, MdTimerOff } from 'react-icons/md';
+import { Quiz } from '../../common/typeScriptDefinitions.ts';
 import { getCompletedQuizId } from '../../services/completedQuiz.service.ts';
 
 const MyCompletedQuizzes = () => {
 
     const { userData } = useContext<UserState>(AppContext);
-    const [quizzesId, setQuizzesId] = useState<Questionnaire[]>([])
+    const [quizzesId, setQuizzesId] = useState<Quiz[]>([])
     const navigate = useNavigate();
 
 
@@ -45,11 +42,13 @@ const MyCompletedQuizzes = () => {
                 <div key={quizId.id} className="card-questionnaire">
                     <div className="card-body ">
                     <h2 className="card-title justify-center">{quizId.title}</h2>
+                    <p className='m-2'>Score: {quizId.myTotalPoints}/{quizId.totalPoints}</p>
                     <button className="card-button hover:bg-purple-500  
                     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
                     focus-visible:outline-purple-500"
                     onClick={() => review(quizId.id)}
                     >Review</button>
+                    
                       </div>
                     </div>                   
                 )

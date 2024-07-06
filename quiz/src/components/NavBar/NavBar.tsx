@@ -59,6 +59,11 @@ const NavBar = ()  =>  {
             Profile
             </button>
           </li>
+          <li>
+            <button onClick={() => navigate('/myScores')}>
+            My scores
+            </button>
+          </li>
           <li><button onClick={onLogout}>Logout</button></li>
         </ul>
       </div>

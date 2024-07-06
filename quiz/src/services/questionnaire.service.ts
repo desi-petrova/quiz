@@ -43,6 +43,12 @@ export const getQuestionnaireById = (id: string) => {
         } else {
           questionnaire.answers = []
         }
+        
+        if(questionnaire.completedQuiz){
+          questionnaire.completedQuiz = Object.keys(questionnaire.completedQuiz)
+        } else {
+          questionnaire.completedQuiz = []
+        }
         return questionnaire;
       })
       .catch(e => console.error(e))
@@ -89,4 +95,28 @@ export const getQuestionnaireById = (id: string) => {
       const points = snapshot.val();
       return listener(points)
     })
+  }
+
+  export const updateQuestionnaireCompletedQuizzes= (idQuestionnaire: string, idQuiz: string): Promise<void> => {
+    return update(ref(db), { [`questionnaires/${idQuestionnaire}/completedQuizzes/${idQuiz}`]: true });
+  };
+
+  export const getQuestionnaireByCompletedQuizzesId = (idQuestionnaire: string) => {
+
+    return get(ref(db, `questionnaires/${idQuestionnaire}`))
+    .then(result => {
+      if (!result.exists()) {
+        throw new Error(`Questionnaire with id ${idQuestionnaire} does not exist!`);
+      }
+      const questionnaire = result.val();
+      if(questionnaire.completedQuizzes){
+        questionnaire.completedQuizzes = Object.keys(questionnaire.completedQuizzes)
+      } else {
+        questionnaire.completedQuizzes = []
+      }
+            
+      return  questionnaire.completedQuizzes
+    })
+    .catch(e => console.error(e))
+
   }
