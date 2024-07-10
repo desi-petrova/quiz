@@ -58,3 +58,11 @@ export const removeAnswer= (answerId: string) => {
    remove(ref(db, `answers/${answerId}`))
         .catch(e => console.log(e))
 }
+
+export const updateAnswer = (idAnswer: string, answer: string) => {
+  return update(ref(db), { [`answers/${idAnswer}/answer/`]: answer })
+}
+
+export const updateAnswerWrong = (idAnswer: string, wrong: boolean) => {
+  return update(ref(db), { [`answers/${idAnswer}/wrong/`]: wrong })
+}

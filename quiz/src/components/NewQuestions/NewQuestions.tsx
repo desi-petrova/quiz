@@ -15,11 +15,11 @@ const NewQuestions = ({idQuestionnaire}: IdQuestionnaire) => {
     const renderQuestion = () => {
         switch (questionType) {
             case 'oneAnswer':
-                return <OneAnswer idQuestionnaire={idQuestionnaire}/>
+                return <OneAnswer idQuestionnaire={idQuestionnaire} />
             case 'moreAnswer':
-                return <MoreAnswer idQuestionnaire={idQuestionnaire}/>
+                return <MoreAnswer idQuestionnaire={idQuestionnaire} />
             case 'openAnswer':
-                return <OpenAnswer idQuestionnaire={idQuestionnaire}/>
+                return <OpenAnswer idQuestionnaire={idQuestionnaire} />
             default:
                 return null; 
         }

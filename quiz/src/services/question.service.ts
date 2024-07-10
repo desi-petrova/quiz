@@ -79,3 +79,7 @@ export const getQuestionsByQuestionnaireId =(idQuestionnaire: string) => {
 export const removeQuestion= (questionId: string) => {
   remove(ref(db, `questions/${questionId}`));
 }
+
+export const updateQuestion = (idQuestion: string, question: string) => {
+  return update(ref(db), { [`questions/${idQuestion}/question/`]: question })
+}

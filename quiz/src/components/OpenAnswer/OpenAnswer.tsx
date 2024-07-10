@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { createQuestion, updateQuestionAnswers } from "../../services/question.service.ts";
+import { useEffect, useState } from 'react';
+import { createQuestion, updateQuestion, updateQuestionAnswers } from "../../services/question.service.ts";
 import {MSG_FIELD_REQUIRED} from '../../common/constant.ts';
-import { createAnswers } from '../../services/answers.service.ts';
+import { createAnswers, getAnswerById, updateAnswer, updateAnswerWrong } from '../../services/answers.service.ts';
 import {updateQuestionnaireQuestion, updateQuestionnaireAnswer, updateQuestionnaireTotalPoints} from "../../services/questionnaire.service.ts"
 import AppContext, { UserState } from '../../context/AppContext';
 import { useContext } from 'react';
 import {updateUserQuestions, updateUserAnswers} from "../../services/users.service.ts"
-import {NewQuestions, IdQuestionnaire} from '../../common/typeScriptDefinitions.ts'
+import {NewQuestions, AnswerProps} from '../../common/typeScriptDefinitions.ts'
 import { useNavigate } from 'react-router-dom';
 
 
-const OneAnswer = ({idQuestionnaire} : IdQuestionnaire) => {
+const OneAnswer = ({idQuestionnaire, idAnswers, idQuestion, question, points, onEdit} : AnswerProps) => {
 
     const navigate = useNavigate();
 
@@ -21,11 +21,26 @@ const OneAnswer = ({idQuestionnaire} : IdQuestionnaire) => {
         points: 0,
 
     }) 
+
     const [errorQuestion, setErrorQuestion] = useState<boolean>(false)
     const [errorAnswer, setErrorAnswer] = useState<boolean>(false)
     const [errorPoints, setErrorPoints] = useState<boolean>(false)
 
     const { userData } = useContext<UserState>(AppContext);
+
+    useEffect(() => {
+        if(idAnswers){
+        getAnswerById(idAnswers[0])
+        .then(res => {
+            setNewQuestion({...newQuestion, answer: res.answer})  
+        })
+        .catch(e => console.error(e)) 
+        }
+        },[idAnswers])
+    
+    if(question && points){
+        setNewQuestion({...newQuestion, question: question, points: points})
+    }
 
     const updateNewQuestion = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -78,6 +93,14 @@ const OneAnswer = ({idQuestionnaire} : IdQuestionnaire) => {
         return navigate('/')
     }
 
+    const update = () => {
+        if(!idQuestion || idAnswers == undefined) return;
+        updateQuestion(idQuestion, newQuestion.question)
+        updateAnswer(idAnswers[0], newQuestion.answer)  
+        updateAnswerWrong(idAnswers[0], true)
+        onEdit
+    }
+
     return (
     <div className='w-full m-4'>
         <div><p>Question:</p>
@@ -109,18 +132,24 @@ const OneAnswer = ({idQuestionnaire} : IdQuestionnaire) => {
         </div>
         {errorPoints && <p className="text-red-500 text-right">{MSG_FIELD_REQUIRED}</p>}
         </div>
-        <div className='flex justify-end'>
-            <button 
-            className="block m-2 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
-            shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-            focus-visible:outline-purple-600"
-            onClick={saveQuestion}>Save</button>
-            <button 
-            className="block m-2 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
-            shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-            focus-visible:outline-purple-600"
-            onClick={saveQuestionAndFinish}>Save and Finish</button>
-        </div>
+        {idAnswers && <div className='flex justify-end'> <button 
+        className="block m-2 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
+        shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+        focus-visible:outline-purple-600"
+        onClick={update}>Update</button>
+        </div>}
+        {!idAnswers && <div className='flex justify-end'>
+        <button 
+        className="block m-2 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
+        shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+        focus-visible:outline-purple-600"
+        onClick={saveQuestion}>Save</button>
+        <button 
+        className="block m-2 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
+        shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+        focus-visible:outline-purple-600"
+        onClick={saveQuestionAndFinish}>Save and Finish</button>
+        </div>}
         
     </div> 
     )

@@ -147,3 +147,19 @@ export const getQuestionnaireById = (id: string) => {
   export const removeQuestionnaireAnswer = (questionnaireId: string, answer: string) => {
     remove(ref(db, `questionnaires/${questionnaireId}/answers/${answer}`));
   }
+
+  export const updateQuestionnaireTitle = (questionnaireId: string, title: string) => {
+    return update(ref(db), { [`questionnaires/${questionnaireId}/title/`]: title });
+  }
+
+  export const updateQuestionnaireDescription = (questionnaireId: string, description: string) => {
+    return update(ref(db), { [`questionnaires/${questionnaireId}/description/`]: description });
+  }
+
+  export const updateQuestionnaireTime = (questionnaireId: string, time: number) => {
+    return update(ref(db), { [`questionnaires/${questionnaireId}/time`]: time });
+  }
+
+  export const updateQuestionnaireStatus = (questionnaireId: string, status: string) => {
+    return update(ref(db), { [`questionnaires/${questionnaireId}/status`]: status });
+  }

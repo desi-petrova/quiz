@@ -29,7 +29,6 @@ const RemoveQuestion = ({idQuestion, onRemove} : RemoveQuestionProps) => {
         removeQuestion(question.id)
         removeUserMyQuestions(question.id, userData.handle)
         onRemove(question.id)
-
     } 
 
     return(

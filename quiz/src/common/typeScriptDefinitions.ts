@@ -118,7 +118,7 @@ export interface Answers {
 }
 
 export interface Answer {
-    description: string,
+    answer: string,
     wrong: boolean | null,
 }
 
@@ -129,6 +129,16 @@ export interface MyAnswers {
     wrong: boolean,
     myAnswer: boolean,
     myOpenAnswer: string,
+}
+
+export interface AnswerProps{
+    idQuestionnaire: string,
+    idAnswers?: string[],
+    idQuestion?: string,
+    question?: string,
+    points?: number,
+    onEdit?: (value: boolean) => void;
+
 }
 
 //Quiz

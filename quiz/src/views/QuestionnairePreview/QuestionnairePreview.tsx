@@ -17,7 +17,7 @@ const QuestionnairePreview = ({idQuestionnaire}: IdQuestionnaire) => {
         focus-visible:outline-purple-600 "
         onClick={() => navigate('/')}>Finnish</button>
         </div>
-        </div>       
+        </div>        
     )
 }
 

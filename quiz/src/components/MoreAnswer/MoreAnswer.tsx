@@ -1,18 +1,20 @@
-import { useState } from 'react';
-import { createQuestion, updateQuestionAnswers } from "../../services/question.service.ts";
+import { useEffect, useState } from 'react';
+import { createQuestion, updateQuestion, updateQuestionAnswers } from "../../services/question.service.ts";
 import {MSG_CORRECT_ANSWER, MSG_FIELD_REQUIRED, MSG_WRONG_ANSWER} from '../../common/constant.ts';
-import { createAnswers } from '../../services/answers.service.ts';
+import { createAnswers, getAnswerById, updateAnswer, updateAnswerWrong } from '../../services/answers.service.ts';
 import {updateQuestionnaireQuestion, updateQuestionnaireAnswer, updateQuestionnaireTotalPoints} from "../../services/questionnaire.service.ts"
 import AppContext, { UserState } from '../../context/AppContext';
 import { useContext } from 'react';
 import {updateUserQuestions, updateUserAnswers} from "../../services/users.service.ts"
-import {IdQuestionnaire, Answer, NewQuestion} from '../../common/typeScriptDefinitions.ts'
+import {Answer, AnswerProps, MyAnswers, NewQuestion} from '../../common/typeScriptDefinitions.ts'
 import { GiCheckMark } from "react-icons/gi";
 import { FaXmark } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 
+type AnswerWithId = (Answer | MyAnswers) & { id?: string };
 
-const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
+
+const MoreAnswers = ({idQuestionnaire, idAnswers, idQuestion, question, points, onEdit}: AnswerProps) => {
     
     const navigate = useNavigate();
     const [newQuestion, setNewQuestion] = useState<NewQuestion>({
@@ -21,13 +23,13 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
         points: 0,
     })
 
-    const [answers, setAnswers] = useState<Answer[]>([
-        {description: '', wrong: null,},
-        {description: '', wrong: null,},
-        {description: '', wrong: null,},
-        {description: '', wrong: null,},
-        {description: '', wrong: null,},
-        {description: '', wrong: null,},
+    const [answers, setAnswers] = useState<AnswerWithId[]>([
+        {answer: '', wrong: null,},
+        {answer: '', wrong: null,},
+        {answer: '', wrong: null,},
+        {answer: '', wrong: null,},
+        {answer: '', wrong: null,},
+        {answer: '', wrong: null,},
 ])
 
     const [errorQuestion, setErrorQuestion] = useState<boolean>(false)
@@ -36,6 +38,24 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
     const [errorPoints, setErrorPoints] = useState<boolean>(false)
 
     const { userData } = useContext<UserState>(AppContext);
+
+    useEffect(() => {
+        if(idAnswers){
+        Promise.all(
+        idAnswers.map((answersId: string) => {
+            return getAnswerById(answersId)
+        }
+        )) 
+        .then(res => {
+            setAnswers(res)  
+        })
+        .catch(e => console.error(e)) 
+        }
+        },[idAnswers])
+    
+    if(question && points){
+        setNewQuestion({...newQuestion, question: question, points: points})
+    }
 
     const updateNewQuestion = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -47,7 +67,7 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
 
     const updateAnswers = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
         const updatedAnswers = answers.map((answer, i) =>
-            i === index ? { ...answer, description: e.target.value } : answer
+            i === index ? { ...answer, answer: e.target.value } : answer
         );
         setAnswers(updatedAnswers);
         };
@@ -61,7 +81,7 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
     }
 
     const addAnswer = () => {
-        setAnswers([...answers, {description: '', wrong: null}])
+        setAnswers([...answers, {answer: '', wrong: null}])
     }
 
     const saveQuestion = () => {
@@ -77,9 +97,9 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
         createQuestion(newQuestion.question, newQuestion.type, idQuestionnaire, newQuestion.points)
         .then(question => {
             answers.forEach(answer => {
-                if(answer.description != "" ) {
+                if(answer.answer != "" ) {
                     if(answer.wrong == null) return 'Wrong Answer!'
-                createAnswers(question.id, answer.description, answer.wrong)
+                createAnswers(question.id, answer.answer, answer.wrong)
                 .then(answer => {
                 updateQuestionAnswers(question.id, answer.id)
                 updateQuestionnaireQuestion(idQuestionnaire, question.id)
@@ -102,12 +122,12 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
             points: 0,
         })
         setAnswers([
-            {description: '', wrong: null,},
-            {description: '', wrong: null,},
-            {description: '', wrong: null,},
-            {description: '', wrong: null,},
-            {description: '', wrong: null,},
-            {description: '', wrong: null,},
+            {answer: '', wrong: null,},
+            {answer: '', wrong: null,},
+            {answer: '', wrong: null,},
+            {answer: '', wrong: null,},
+            {answer: '', wrong: null,},
+            {answer: '', wrong: null,},
         ])
         setErrorQuestion(false)
         setErrorWrongAnswer(false)
@@ -119,6 +139,17 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
         saveQuestion()
 
         return navigate('/')
+    }
+
+    const update = () => {
+        if(!idQuestion) return;
+        updateQuestion(idQuestion, newQuestion.question)
+        answers.forEach(el => {
+            if(el.wrong == null || el.id == null) return; 
+          updateAnswer(el.id, el.answer)  
+          updateAnswerWrong(el.id, el.wrong)
+        })
+        onEdit
     }
 
     return (
@@ -142,7 +173,7 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
             <input
             className={`input w-full mt-2 mb-2 input-bordered 
             ${answerKey.wrong === null ? '' : answerKey.wrong === false ? 'input-success' : 'input-error' }`} 
-            value={answerKey.description}
+            value={answerKey.answer}
             onChange={updateAnswers(index)}
             />
             <button 
@@ -169,19 +200,27 @@ const MoreAnswers = ({idQuestionnaire}: IdQuestionnaire) => {
         onChange={updateNewQuestion('points')}/>
         </div>
         {errorPoints && <p className="text-red-500 text-right">{MSG_FIELD_REQUIRED}</p>}
-        </div>        
-        <div className='flex justify-end'>
-            <button 
-            className="block m-2 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
-            shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-            focus-visible:outline-purple-600"
-            onClick={saveQuestion}>Save</button>
-            <button 
-            className="block m-2 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
-            shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-            focus-visible:outline-purple-600"
-            onClick={saveQuestionAndFinish}>Save and Finish</button>
-        </div>
+        </div>   
+
+        {idAnswers && <div className='flex justify-end'>
+        <button 
+        className="block m-2 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
+        shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+        focus-visible:outline-purple-600"
+        onClick={update}>Update</button>
+        </div>}
+        {!idAnswers && <div className='flex justify-end'>
+        <button 
+        className="block m-2 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
+        shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+        focus-visible:outline-purple-600"
+        onClick={saveQuestion}>Save</button>
+        <button 
+        className="block m-2 rounded-md bg-purple-800 px-3.5 py-2.5 text-center text-sm font-semibold text-white 
+        shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+        focus-visible:outline-purple-600"
+        onClick={saveQuestionAndFinish}>Save and Finish</button>
+        </div>}
         
     </div> 
     )
